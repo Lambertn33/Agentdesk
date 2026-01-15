@@ -12,15 +12,35 @@ class User extends Authenticatable
     /** @use HasFactory<\Database\Factories\UserFactory> */
     use HasFactory, Notifiable;
 
+    const ROLES = [
+        'ADMIN',
+        'MANAGER',
+        'AGENT',
+    ];
+
+    const STATUSES = [
+        'ACTIVE',
+        'INACTIVE',
+    ];
+
+    const ADMIN = self::ROLES[0];
+    const MANAGER = self::ROLES[1];
+    const AGENT = self::ROLES[2];
+
+    const ACTIVE = self::STATUSES[0];
+    const INACTIVE = self::STATUSES[1];
+
     /**
      * The attributes that are mass assignable.
      *
      * @var list<string>
      */
     protected $fillable = [
-        'name',
+        'names',
         'email',
+        'role',
         'password',
+        'status',
     ];
 
     /**
