@@ -26,10 +26,10 @@ class UsersSeeder extends Seeder
         // Create 14 manager users
         for ($i = 1; $i <= 14; $i++) {
             User::create([
-                'names' => fake()->name(),
-                'email' => fake()->unique()->safeEmail(),
+                'names' => 'User ' . $i,
+                'email' => 'user' . $i . '@agentdesk.com',
                 'password' => Hash::make('password'),
-                'role' => User::MANAGER,
+                'role' => User::USER,
                 'status' => User::ACTIVE,
                 'email_verified_at' => now(),
             ]);

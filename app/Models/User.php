@@ -14,8 +14,7 @@ class User extends Authenticatable
 
     const ROLES = [
         'ADMIN',
-        'MANAGER',
-        'AGENT',
+        'USER'
     ];
 
     const STATUSES = [
@@ -24,11 +23,11 @@ class User extends Authenticatable
     ];
 
     const ADMIN = self::ROLES[0];
-    const MANAGER = self::ROLES[1];
-    const AGENT = self::ROLES[2];
+    const USER = self::ROLES[1];
 
     const ACTIVE = self::STATUSES[0];
     const INACTIVE = self::STATUSES[1];
+ 
 
     /**
      * The attributes that are mass assignable.
