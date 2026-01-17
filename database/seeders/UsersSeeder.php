@@ -13,6 +13,7 @@ class UsersSeeder extends Seeder
      */
     public function run(): void
     {
+        User::query()->delete();
         // Create admin user
         User::create([
             'names' => 'Admin User',
