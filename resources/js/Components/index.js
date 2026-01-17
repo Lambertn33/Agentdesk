@@ -3,5 +3,3 @@ export { default as Footer } from './Partials/Footer';
 
 export { default as HomeHero } from './Home/Hero';
 export { default as HomeQuery } from './Home/Query';
-export { default as HomeInfoCard } from './Home/InfoCard';
-export { default as HomeExampleQueryCard } from './Home/ExampleQueryCard';
