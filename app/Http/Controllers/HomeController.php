@@ -11,6 +11,9 @@ class HomeController extends Controller
     {
         return Inertia::render('Index', [
             'title' => 'Agent Desk',
+            'auth' => [
+                'user' => auth()->user(),
+            ],
         ]);
     }
 }
