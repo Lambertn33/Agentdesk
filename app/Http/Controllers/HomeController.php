@@ -9,7 +9,7 @@ class HomeController extends Controller
 {
     public function index()
     {
-        return Inertia::render('Index', [
+        return Inertia::render('Home', [
             'title' => 'Agent Desk',
             'auth' => [
                 'user' => auth()->user(),
