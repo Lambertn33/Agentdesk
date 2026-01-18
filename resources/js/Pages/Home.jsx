@@ -15,7 +15,7 @@ const Index = ({ title, auth }) => {
 
         {/* Main Query Section */}
         <div className='flex justify-between'>
-          <div className='w-1/2'>
+          <div className='w-2/5'>
             <HomeQuery
               title="Search for Skilled Professionals"
               subtitle="Tell us what skills, expertise, or qualifications you're looking for. We'll find matching professionals you can reach out to."
@@ -24,7 +24,7 @@ const Index = ({ title, auth }) => {
               buttonText="Search Professionals"
             />
           </div>
-          <div className='w-2/3 text-center'>
+          <div className='w-3/5 text-center'>
             <p className="text-white">
               Search results will appear here.
             </p>
