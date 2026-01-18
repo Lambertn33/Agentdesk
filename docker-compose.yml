@@ -8,6 +8,7 @@ services:
     working_dir: /var/www/html
     ports:
       - "8000:8000"
+      - "5173:5173"
     environment:
       APP_ENV: local
       APP_DEBUG: "true"
@@ -25,11 +26,15 @@ services:
     depends_on:
       db:
         condition: service_healthy
-    command: >
+    command: >+
       sh -c "
         composer install --no-dev --prefer-dist --no-interaction &&
+        npm install &&
         php artisan migrate --force &&
+        npm run dev &
+        sleep 2 &&
         php artisan serve --host=0.0.0.0 --port=8000"
+        
   db:
     image: mysql:8.0
     container_name: agentdesk-db
@@ -44,7 +49,7 @@ services:
     volumes:
       - db-data:/var/lib/mysql
     healthcheck:
-      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pagentdesk"]
+      test: [ "CMD", "mysqladmin", "ping", "-h", "localhost", "-u", "root", "-pagentdesk" ]
       interval: 3s
       timeout: 5s
       retries: 10

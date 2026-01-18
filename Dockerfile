@@ -17,7 +17,9 @@ RUN apk add --no-cache \
     freetype-dev \
     zip \
     unzip \
-    mysql-client
+    mysql-client \
+    nodejs \
+    npm
 
 # Configure GD extension
 RUN docker-php-ext-configure gd --with-freetype --with-jpeg
@@ -52,8 +54,8 @@ COPY . .
 RUN php artisan config:clear || true \
     && php artisan route:clear || true
 
-# Expose PHP development server port
-EXPOSE 8000
+# Expose PHP development server and Vite ports
+EXPOSE 8000 5173
 
 # Default command (can be overridden by docker-compose)
 CMD ["php", "artisan", "serve", "--host=0.0.0.0", "--port=8000"]

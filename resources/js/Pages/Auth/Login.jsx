@@ -21,23 +21,6 @@ const Login = () => {
                     <form>
                         <div className="space-y-6">
                             {/* Email Field */}
-                            {/* <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2"
-                                >
-                                    Email Address
-                                </label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
-                                    placeholder="you@example.com"
-                                />
-                            </div> */}
                             <Input
                                 htmlFor="email"
                                 label="Email Address"
@@ -49,25 +32,6 @@ const Login = () => {
                             />
 
                             {/* Password Field */}
-                            {/* <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC]"
-                                    >
-                                        Password
-                                    </label>
-                                </div>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
-                                    placeholder="Enter your password"
-                                />
-                            </div> */}
                             <Input
                                 htmlFor="password"
                                 label="Password"
