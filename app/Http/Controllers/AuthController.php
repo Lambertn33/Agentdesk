@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
+use App\Models\SkillCategory;
 
 class AuthController extends Controller
 {
@@ -15,7 +16,10 @@ class AuthController extends Controller
 
     public function getregister()
     {
-        return Inertia::render('Auth/Register');
+        $skillCategories = SkillCategory::with('skills')->orderBy('name', 'asc')->get();
+        return Inertia::render('Auth/Register', [
+            'skillCategories' => $skillCategories,
+        ]);
     }
 
     public function postlogin(Request $request)
