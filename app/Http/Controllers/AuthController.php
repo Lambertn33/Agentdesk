@@ -4,16 +4,39 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\Auth;
 
 class AuthController extends Controller
 {
-    public function login()
+    public function getlogin()
     {
         return Inertia::render('Auth/Login');
     }
 
-    public function register()
+    public function getregister()
     {
         return Inertia::render('Auth/Register');
+    }
+
+    public function postlogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email',
+            'password' => 'required',
+        ]);
+
+        if (Auth::attempt($request->only('email', 'password'))) {
+            return redirect()->route('home');
+        }
+
+        return back()->withErrors([
+            'email' => 'Invalid credentials',
+        ]);
+    }
+
+    public function postlogout()
+    {
+        Auth::logout();
+        return back();
     }
 }

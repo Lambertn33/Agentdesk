@@ -1,5 +1,5 @@
 import React from 'react';
-import { Link } from '@inertiajs/react';
+import { Link, Form } from '@inertiajs/react';
 import { Layout, Input } from '../../Components';
 
 const Login = () => {
@@ -18,39 +18,51 @@ const Login = () => {
 
                 {/* Login Form */}
                 <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8">
-                    <form>
-                        <div className="space-y-6">
-                            {/* Email Field */}
-                            <Input
-                                htmlFor="email"
-                                label="Email Address"
-                                name="email"
-                                type="email"
-                                autoComplete="email"
-                                required
-                                placeholder="you@example.com"
-                            />
+                    <Form action="/login" method="post">
+                        {({
+                            errors,
+                            hasErrors,
+                            processing,
+                            submit
+                        }) => (
+                            <div className="space-y-6">
+                                {/* Email Field */}
+                                <Input
+                                    htmlFor="email"
+                                    label="Email Address"
+                                    name="email"
+                                    type="email"
+                                    autoComplete="email"
+                                    required={false}
+                                    placeholder="you@example.com"
+                                    hasErrors={errors.email}
+                                    error={errors.email}
+                                />
 
-                            {/* Password Field */}
-                            <Input
-                                htmlFor="password"
-                                label="Password"
-                                name="password"
-                                type="password"
-                                autoComplete="current-password"
-                                required
-                                placeholder="Enter your password"
-                            />
+                                {/* Password Field */}
+                                <Input
+                                    htmlFor="password"
+                                    label="Password"
+                                    name="password"
+                                    type="password"
+                                    autoComplete="current-password"
+                                    required={false}
+                                    placeholder="Enter your password"
+                                    hasErrors={errors.password}
+                                    error={errors.password}
+                                />
 
-                            {/* Submit Button */}
-                            <button
-                                type="submit"
-                                className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
-                            >
-                                Sign In
-                            </button>
-                        </div>
-                    </form>
+                                {/* Submit Button */}
+                                <button
+                                    type="submit"
+                                    disabled={processing}
+                                    className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                                >
+                                    {processing ? 'Signing in...' : 'Sign In'}
+                                </button>
+                            </div>
+                        )}
+                    </Form>
 
                     {/* Register Link */}
                     <div className="mt-6 text-center">

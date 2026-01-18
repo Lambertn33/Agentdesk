@@ -28,14 +28,12 @@ const Query = ({ title, subtitle, label, placeholder, buttonText }) => {
                         placeholder={placeholder}
                     />
                 </div>
-                <div className="flex items-center justify-end">
-                    <button
-                        type="submit"
-                        className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
-                    >
-                        {buttonText}
-                    </button>
-                </div>
+                <button
+                    type="submit"
+                    className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                >
+                    {buttonText}
+                </button>
             </form>
         </div>
     )
