@@ -38,6 +38,17 @@ class AuthController extends Controller
         ]);
     }
 
+    public function postregister(Request $request)
+    {
+        // $request->validate([
+        //     'name' => 'required|string|max:255',
+        //     'email' => 'required|email|unique:users',
+        //     'password' => 'required|string|min:8|confirmed',
+        // ]);
+        dd($request->all());
+        
+    }
+
     public function postlogout()
     {
         Auth::logout();

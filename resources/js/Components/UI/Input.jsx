@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error }) => {
+const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error, value, onChange }) => {
     const borderClass = hasErrors
         ? 'border-red-500 dark:border-red-500'
         : 'border-[#e3e3e0] dark:border-[#3E3E3A]';
@@ -18,6 +18,8 @@ const Input = ({ id, label, name, type, autoComplete, required, placeholder, has
                 id={id}
                 name={name}
                 type={type}
+                value={value || ''}
+                onChange={onChange}
                 autoComplete={autoComplete}
                 required={required}
                 className={`w-full px-4 py-3 text-sm border ${borderClass} rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent`}
@@ -33,6 +35,7 @@ const Input = ({ id, label, name, type, autoComplete, required, placeholder, has
 }
 
 Input.propTypes = {
+    id: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     label: PropTypes.string.isRequired,
     name: PropTypes.string.isRequired,
     type: PropTypes.string.isRequired,
@@ -41,14 +44,19 @@ Input.propTypes = {
     placeholder: PropTypes.string,
     hasErrors: PropTypes.bool,
     error: PropTypes.string,
+    value: PropTypes.string,
+    onChange: PropTypes.func,
 }
 
 Input.defaultProps = {
+    id: undefined,
     autoComplete: undefined,
     required: false,
     placeholder: '',
     hasErrors: false,
     error: '',
+    value: '',
+    onChange: undefined,
 }
 
 export default Input

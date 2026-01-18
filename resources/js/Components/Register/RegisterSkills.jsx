@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from '../index';
 
-const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedSkills, handleAddSkill, handleRemoveSkill }) => {
+const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedSkills, handleAddSkill, handleRemoveSkill, allowToViewInterests }) => {
     const handleSkillChange = (skillId) => {
         if (selectedSkills.includes(skillId)) {
             handleRemoveSkill(skillId);
@@ -55,7 +55,8 @@ const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedS
                 </button>
                 <button
                     onClick={handleNext}
-                    className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                    disabled={!allowToViewInterests()}
+                    className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
                     Next
                 </button>

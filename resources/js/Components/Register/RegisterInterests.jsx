@@ -1,7 +1,7 @@
 import React from 'react';
 import { Checkbox } from '../index';
 
-const RegisterInterests = ({ interests, handlePrevious, selectedInterests, handleAddInterest, handleRemoveInterest }) => {
+const RegisterInterests = ({ interests, handlePrevious, selectedInterests, handleAddInterest, handleRemoveInterest, handleSubmit, allowToSubmit, processing }) => {
     const handleInterestChange = (interestId) => {
         if (selectedInterests.includes(interestId)) {
             handleRemoveInterest(interestId);
@@ -22,11 +22,17 @@ const RegisterInterests = ({ interests, handlePrevious, selectedInterests, handl
                 </p>
             </div>
 
-            {/* Skills */}
+            {/* Interests */}
             <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8 mb-8">
-                <div className="space-y-8 grid grid-cols-2 md:grid-cols-3 gap-3">
+                <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                     {interests.map((interest) => (
-                        <Checkbox key={interest.id} id={interest.id} checked={selectedInterests.includes(interest.id)} onChange={() => handleInterestChange(interest.id)} label={interest.name} />
+                        <Checkbox
+                            key={interest.id}
+                            id={interest.id}
+                            checked={selectedInterests?.includes(interest.id)}
+                            onChange={() => handleInterestChange(interest.id)}
+                            label={interest.name}
+                        />
                     ))}
                 </div>
             </div>
@@ -40,10 +46,11 @@ const RegisterInterests = ({ interests, handlePrevious, selectedInterests, handl
                     Previous
                 </button>
                 <button
-
-                    className="inline-flex items-center px-6 py-3 text-base font-medium text-[#1b1b18] dark:text-[#EDEDEC] border border-[#e3e3e0] dark:border-[#3E3E3A] hover:border-[#f53003] dark:hover:border-[#FF4433] rounded-sm transition-colors"
+                    onClick={handleSubmit}
+                    disabled={!allowToSubmit() || processing}
+                    className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                 >
-                    Submit
+                    {processing ? 'Submitting...' : 'Submit'}
                 </button>
             </div>
         </div>

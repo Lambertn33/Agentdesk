@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import { Input } from '../index';
 import { Link } from '@inertiajs/react';
 
-const RegisterForm = ({ handleNext, formData, handleChange }) => {
+const RegisterForm = ({ handleNext, formData, handleChange, allowToViewSkills, errors }) => {
     return (
         <div className="max-w-md mx-auto">
             {/* Header */}
@@ -19,21 +19,70 @@ const RegisterForm = ({ handleNext, formData, handleChange }) => {
             <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8">
                 <div className="space-y-6">
                     {/* Name Field */}
-                    <Input id="name" label="Name" name={formData.name} type="text" autoComplete="name" required placeholder="Enter your name" />
+                    <Input
+                        id="name"
+                        label="Name"
+                        name="name"
+                        type="text"
+                        value={formData.name}
+                        onChange={handleChange}
+                        autoComplete="name"
+                        required
+                        placeholder="Enter your name"
+                        hasErrors={!!errors?.name}
+                        error={errors?.name}
+                    />
                     {/* Email Field */}
-                    <Input id="email" label="Email Address" name={formData.email} type="email" autoComplete="email" required placeholder="you@example.com" />
+                    <Input
+                        id="email"
+                        label="Email Address"
+                        name="email"
+                        type="email"
+                        value={formData.email}
+                        onChange={handleChange}
+                        autoComplete="email"
+                        required
+                        placeholder="you@example.com"
+                        hasErrors={!!errors?.email}
+                        error={errors?.email}
+                    />
 
                     {/* Password Field */}
-                    <Input id="password" label="Password" name={formData.password} type="password" autoComplete="current-password" required placeholder="Enter your password" />
+                    <Input
+                        id="password"
+                        label="Password"
+                        name="password"
+                        type="password"
+                        value={formData.password}
+                        onChange={handleChange}
+                        autoComplete="new-password"
+                        required
+                        placeholder="Enter your password"
+                        hasErrors={!!errors?.password}
+                        error={errors?.password}
+                    />
 
                     {/* Confirm Password Field */}
-                    <Input id="password_confirmation" label="Confirm Password" name={formData.password_confirmation} type="password" autoComplete="confirm-password" required placeholder="Confirm your password" />
+                    <Input
+                        id="password_confirmation"
+                        label="Confirm Password"
+                        name="password_confirmation"
+                        type="password"
+                        value={formData.password_confirmation}
+                        onChange={handleChange}
+                        autoComplete="new-password"
+                        required
+                        placeholder="Confirm your password"
+                        hasErrors={!!errors?.password_confirmation}
+                        error={errors?.password_confirmation}
+                    />
 
                     {/* Submit Button */}
                     <button
                         type="button"
                         onClick={handleNext}
-                        className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                        disabled={!allowToViewSkills()}
+                        className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Next
                     </button>
@@ -53,7 +102,7 @@ const RegisterForm = ({ handleNext, formData, handleChange }) => {
                 </div>
             </div>
         </div>
-    )
-}
+    );
+};
 
-export default RegisterForm
+export default RegisterForm;
