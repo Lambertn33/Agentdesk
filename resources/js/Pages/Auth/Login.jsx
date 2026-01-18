@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
-import { Layout } from '../../Components';
+import { Layout, Input } from '../../Components';
 
 const Login = () => {
     return (
@@ -21,7 +21,7 @@ const Login = () => {
                     <form>
                         <div className="space-y-6">
                             {/* Email Field */}
-                            <div>
+                            {/* <div>
                                 <label
                                     htmlFor="email"
                                     className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2"
@@ -37,10 +37,19 @@ const Login = () => {
                                     className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
                                     placeholder="you@example.com"
                                 />
-                            </div>
+                            </div> */}
+                            <Input
+                                htmlFor="email"
+                                label="Email Address"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required
+                                placeholder="you@example.com"
+                            />
 
                             {/* Password Field */}
-                            <div>
+                            {/* <div>
                                 <div className="flex items-center justify-between mb-2">
                                     <label
                                         htmlFor="password"
@@ -58,7 +67,16 @@ const Login = () => {
                                     className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
                                     placeholder="Enter your password"
                                 />
-                            </div>
+                            </div> */}
+                            <Input
+                                htmlFor="password"
+                                label="Password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                required
+                                placeholder="Enter your password"
+                            />
 
                             {/* Submit Button */}
                             <button

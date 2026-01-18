@@ -1,6 +1,6 @@
 import React from 'react';
 import { Link } from '@inertiajs/react';
-import { Layout } from '../../Components';
+import { Layout, Input } from '../../Components';
 
 const Login = () => {
     return (
@@ -21,63 +21,15 @@ const Login = () => {
                     <form>
                         <div className="space-y-6">
                             {/* Name Field */}
-                            <div>
-                                <label
-                                    htmlFor="name"
-                                    className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2"
-                                >
-                                    Name
-                                </label>
-                                <input
-                                    id="name"
-                                    name="name"
-                                    type="text"
-                                    autoComplete="name"
-                                    required
-                                    className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
-                                    placeholder="Enter your name"
-                                />
-
-                            </div>
+                            <Input label="Name" name="name" type="text" autoComplete="name" required placeholder="Enter your name" />
                             {/* Email Field */}
-                            <div>
-                                <label
-                                    htmlFor="email"
-                                    className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2"
-                                >
-                                    Email Address
-                                </label>
-                                <input
-                                    id="email"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required
-                                    className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
-                                    placeholder="you@example.com"
-                                />
-                            </div>
+                            <Input label="Email Address" name="email" type="email" autoComplete="email" required placeholder="you@example.com" />
 
                             {/* Password Field */}
-                            <div>
-                                <div className="flex items-center justify-between mb-2">
-                                    <label
-                                        htmlFor="password"
-                                        className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC]"
-                                    >
-                                        Password
-                                    </label>
-                                </div>
-                                <input
-                                    id="password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required
-                                    className="w-full px-4 py-3 text-sm border border-[#e3e3e0] dark:border-[#3E3E3A] rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent"
-                                    placeholder="Enter your password"
-                                />
-                            </div>
+                            <Input label="Password" name="password" type="password" autoComplete="current-password" required placeholder="Enter your password" />
+
+                            {/* Confirm Password Field */}
+                            <Input label="Confirm Password" name="password_confirmation" type="password" autoComplete="confirm-password" required placeholder="Confirm your password" />
 
                             {/* Submit Button */}
                             <button
