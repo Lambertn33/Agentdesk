@@ -6,6 +6,7 @@ use Illuminate\Http\Request;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SkillCategory;
+use App\Models\Interest;
 
 class AuthController extends Controller
 {
@@ -17,9 +18,8 @@ class AuthController extends Controller
     public function getregister()
     {
         $skillCategories = SkillCategory::with('skills')->orderBy('name', 'asc')->get();
-        return Inertia::render('Auth/Register', [
-            'skillCategories' => $skillCategories,
-        ]);
+        $interests = Interest::orderBy('name', 'asc')->get();
+        return Inertia::render('Auth/Register', compact('skillCategories', 'interests'));
     }
 
     public function postlogin(Request $request)

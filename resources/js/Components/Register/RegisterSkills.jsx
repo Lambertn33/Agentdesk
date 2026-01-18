@@ -1,8 +1,7 @@
-import React, { useState } from 'react';
+import React from 'react';
+import { Checkbox } from '../index';
 
-const RegisterSkills = ({ skillCategories, handlePrevious, handleNext }) => {
-    const [selectedSkills, setSelectedSkills] = useState([]);
-
+const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedSkills }) => {
     const handleSkillChange = (skillId) => {
         console.log(skillId);
     };
@@ -29,20 +28,11 @@ const RegisterSkills = ({ skillCategories, handlePrevious, handleNext }) => {
                             </h2>
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {category.skills.map((skill) => (
-                                    <label
-                                        key={skill.id}
-                                        className="flex items-center p-3  rounded-sm hover:border-[#f53003] dark:hover:border-[#FF4433] cursor-pointer transition-colors"
-                                    >
-                                        <input
-                                            type="checkbox"
-                                            checked={selectedSkills.includes(skill.id)}
-                                            onChange={() => handleSkillChange(skill.id)}
-                                            className="h-4 w-4 text-[#f53003] dark:text-[#FF4433] border-[#e3e3e0] dark:border-[#3E3E3A] rounded focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:ring-2"
-                                        />
-                                        <span className="ml-3 text-sm text-[#1b1b18] dark:text-[#EDEDEC]">
-                                            {skill.name}
-                                        </span>
-                                    </label>
+                                    <Checkbox
+                                        id={skill.id}
+                                        checked={selectedSkills?.includes(skill.id)}
+                                        onChange={() => handleSkillChange(skill.id)}
+                                        label={skill.name} />
                                 ))}
                             </div>
                         </div>
