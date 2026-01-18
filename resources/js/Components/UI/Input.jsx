@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const Input = ({ label, name, type, autoComplete, required, placeholder, hasErrors, error }) => {
+const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error }) => {
     const borderClass = hasErrors
         ? 'border-red-500 dark:border-red-500'
         : 'border-[#e3e3e0] dark:border-[#3E3E3A]';
@@ -9,13 +9,13 @@ const Input = ({ label, name, type, autoComplete, required, placeholder, hasErro
     return (
         <div>
             <label
-                htmlFor={name}
+                htmlFor={id}
                 className="block text-sm font-medium text-[#1b1b18] dark:text-[#EDEDEC] mb-2"
             >
                 {label}
             </label>
             <input
-                id={name}
+                id={id}
                 name={name}
                 type={type}
                 autoComplete={autoComplete}

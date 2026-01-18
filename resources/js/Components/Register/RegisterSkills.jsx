@@ -1,9 +1,13 @@
 import React from 'react';
 import { Checkbox } from '../index';
 
-const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedSkills }) => {
+const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedSkills, handleAddSkill, handleRemoveSkill }) => {
     const handleSkillChange = (skillId) => {
-        console.log(skillId);
+        if (selectedSkills.includes(skillId)) {
+            handleRemoveSkill(skillId);
+        } else {
+            handleAddSkill(skillId);
+        }
     };
 
     return (
@@ -29,6 +33,7 @@ const RegisterSkills = ({ skillCategories, handlePrevious, handleNext, selectedS
                             <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
                                 {category.skills.map((skill) => (
                                     <Checkbox
+                                        key={skill.id}
                                         id={skill.id}
                                         checked={selectedSkills?.includes(skill.id)}
                                         onChange={() => handleSkillChange(skill.id)}

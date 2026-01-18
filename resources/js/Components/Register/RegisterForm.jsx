@@ -19,15 +19,15 @@ const RegisterForm = ({ handleNext, formData, handleChange }) => {
             <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8">
                 <div className="space-y-6">
                     {/* Name Field */}
-                    <Input label="Name" name={formData.name} type="text" autoComplete="name" required placeholder="Enter your name" />
+                    <Input id="name" label="Name" name={formData.name} type="text" autoComplete="name" required placeholder="Enter your name" />
                     {/* Email Field */}
-                    <Input label="Email Address" name={formData.email} type="email" autoComplete="email" required placeholder="you@example.com" />
+                    <Input id="email" label="Email Address" name={formData.email} type="email" autoComplete="email" required placeholder="you@example.com" />
 
                     {/* Password Field */}
-                    <Input label="Password" name={formData.password} type="password" autoComplete="current-password" required placeholder="Enter your password" />
+                    <Input id="password" label="Password" name={formData.password} type="password" autoComplete="current-password" required placeholder="Enter your password" />
 
                     {/* Confirm Password Field */}
-                    <Input label="Confirm Password" name={formData.password_confirmation} type="password" autoComplete="confirm-password" required placeholder="Confirm your password" />
+                    <Input id="password_confirmation" label="Confirm Password" name={formData.password_confirmation} type="password" autoComplete="confirm-password" required placeholder="Confirm your password" />
 
                     {/* Submit Button */}
                     <button
