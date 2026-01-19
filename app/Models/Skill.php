@@ -20,6 +20,7 @@ class Skill extends Model
 
     public function profiles(): BelongsToMany
     {
-        return $this->belongsToMany(Profile::class)->withPivot('level', 'years_of_experience');
+        return $this->belongsToMany(Profile::class, 'profile_skills')
+            ->withPivot('level', 'years_of_experience');
     }
 }

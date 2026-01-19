@@ -13,6 +13,6 @@ class Interest extends Model
 
     public function profiles(): BelongsToMany
     {
-        return $this->belongsToMany(Profile::class);
+        return $this->belongsToMany(Profile::class, 'profile_interests', 'interest_id', 'profile_id');
     }
 }

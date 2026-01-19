@@ -24,12 +24,13 @@ class Profile extends Model
 
     public function skills(): BelongsToMany
     {
-        return $this->belongsToMany(Skill::class)->withPivot('level', 'years_of_experience');
+        return $this->belongsToMany(Skill::class, 'profile_skills')
+            ->withPivot('level', 'years_of_experience');
     }
 
     public function interests(): BelongsToMany
     {
-        return $this->belongsToMany(Interest::class);
+        return $this->belongsToMany(Interest::class, 'profile_interests', 'profile_id', 'interest_id');
     }
 
     public function availabilities(): HasMany

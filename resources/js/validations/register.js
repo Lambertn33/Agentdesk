@@ -1,6 +1,6 @@
 export const isUserFormValid = (formData) => {
     return (
-        formData.name &&
+        formData.names &&
         formData.email &&
         isValidEmail(formData.email) &&
         formData.password &&

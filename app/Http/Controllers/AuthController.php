@@ -8,8 +8,19 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\SkillCategory;
 use App\Models\Interest;
 use App\Models\User;
+use App\Models\Profile;
+use App\Services\AuthServices;
+use Illuminate\Support\Facades\DB;
+
 class AuthController extends Controller
 {
+    protected $authServices;
+
+    public function __construct(AuthServices $authServices)
+    {
+        $this->authServices = $authServices;
+    }
+
     public function getlogin()
     {
         return Inertia::render('Auth/Login');
@@ -41,12 +52,41 @@ class AuthController extends Controller
     public function postregister(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'names' => 'required|string|max:255',
             'email' => 'required|email|unique:users',
             'password' => 'required|string|min:8|confirmed',
+            'bio' => 'nullable|string',
+            'address' => 'required|string',
+            'city' => 'required|string',
+            'timezone' => 'required|string',
+            'skillsExperience' => 'required|array|min:1',
+            'interests' => 'required|array|min:1',
         ]);
-        dd($request->all());
+
+        try {
+            DB::beginTransaction();
+            $data = $request->all();
         
+            $user = $this->authServices->createUser($data);
+            $profile = $this->authServices->createProfile($user, $data);
+
+            if (!empty($data['skillsExperience'])) {
+                $this->authServices->attachProfileSkills($profile, $data['skillsExperience']);
+            }
+
+            if (!empty($data['interests'])) {
+                $this->authServices->attachProfileInterests($profile, $data['interests']);
+            }
+            DB::commit();
+            Auth::login($user);
+            return redirect()->route('home');
+
+        } catch (\Throwable $th) {
+            DB::rollBack();
+            return back()->withErrors([
+                'email' => 'An error occurred while registering. Please try again.',
+            ]);
+        }
     }
 
     public function postlogout()

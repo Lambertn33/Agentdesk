@@ -11,7 +11,7 @@ const Register = ({ skillCategories, interests }) => {
     const [emailError, setEmailError] = useState('');
 
     const { data, setData, post, processing, errors } = useForm({
-        name: '',
+        names: '',
         email: '',
         password: '',
         password_confirmation: '',

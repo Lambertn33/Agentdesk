@@ -20,17 +20,17 @@ const RegisterForm = ({ handleNext, formData, handleChange, allowToViewAddress, 
                 <div className="space-y-6">
                     {/* Name Field */}
                     <Input
-                        id="name"
+                        id="names"
                         label="Name"
-                        name="name"
+                        name="names"
                         type="text"
-                        value={formData.name}
+                        value={formData.names}
                         onChange={handleChange}
                         autoComplete="name"
                         required
                         placeholder="Enter your name"
-                        hasErrors={!!errors?.name}
-                        error={errors?.name}
+                        hasErrors={!!errors?.names}
+                        error={errors?.names}
                     />
                     {/* Email Field */}
                     <div>
