@@ -7,6 +7,7 @@ export { default as HomeQuery } from './Home/Query';
 
 export { default as Input } from './UI/Input';
 export { default as Checkbox } from './UI/Checkbox';
+export { default as Textarea } from './UI/Textarea';
 
 export { default as RegisterSkills } from './Register/RegisterSkills';
 export { default as RegisterInterests } from './Register/RegisterInterests';
