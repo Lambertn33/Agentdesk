@@ -2,10 +2,10 @@ import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
 import axios from 'axios';
 import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddressForm, RegisterSkillsExperience } from '../../Components';
-import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid, isValidEmail } from '../../validations';
+import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid, isValidEmail } from '../../Validations';
 
 const Register = ({ skillCategories, interests }) => {
-    const [step, setStep] = useState(1);
+    const [step, setStep] = useState(2);
     const [emailVerified, setEmailVerified] = useState(false);
     const [emailVerifying, setEmailVerifying] = useState(false);
     const [emailError, setEmailError] = useState('');

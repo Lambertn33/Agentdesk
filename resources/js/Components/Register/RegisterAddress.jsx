@@ -1,6 +1,6 @@
 import React from 'react';
-import { Input, Textarea } from '../index';
-import { Link } from '@inertiajs/react';
+import { Input, Textarea, Select } from '../index';
+import { getDayOfWeek, getTimeBlock, getMode, getGmts } from '../../Helpers';
 
 const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSkills, errors, handlePrevious }) => {
     return (
@@ -47,19 +47,48 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                     />
 
                     {/* Timezone Field */}
-                    <Input
+                    <Select
                         id="timezone"
-                        label="Timezone"
+                        label="Select your timezone"
                         name="timezone"
-                        type="text"
                         value={formData.timezone}
                         onChange={handleChange}
+                        options={getGmts().map(gmt => ({ value: gmt, label: gmt }))}
                         required
-                        placeholder="Enter your timezone"
-                        hasErrors={!!errors?.timezone}
-                        error={errors?.timezone}
                     />
 
+                    {/* Day of Week */}
+                    <Select
+                        id="day_of_week"
+                        label="Select the day of the week you are available"
+                        name="day_of_week"
+                        value={formData.day_of_week}
+                        onChange={handleChange}
+                        options={getDayOfWeek().map(dayOfWeek => ({ value: dayOfWeek, label: dayOfWeek }))}
+                        required
+                    />
+
+                    {/* Time Block */}
+                    <Select
+                        id="time_block"
+                        label="Select the time block you are available"
+                        name="time_block"
+                        value={formData.time_block}
+                        onChange={handleChange}
+                        options={getTimeBlock().map(timeBlock => ({ value: timeBlock, label: timeBlock }))}
+                        required
+                    />
+
+                    {/* Mode */}
+                    <Select
+                        id="mode"
+                        label="Select the mode you are available"
+                        name="mode"
+                        value={formData.mode}
+                        onChange={handleChange}
+                        options={getMode().map(mode => ({ value: mode, label: mode }))}
+                        required
+                    />
                     <Textarea
                         id="bio"
                         label="Bio"
