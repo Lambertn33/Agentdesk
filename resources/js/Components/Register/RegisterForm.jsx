@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../index';
 import { Link } from '@inertiajs/react';
 
-const RegisterForm = ({ handleNext, formData, handleChange, allowToViewSkills, errors }) => {
+const RegisterForm = ({ handleNext, formData, handleChange, allowToViewAddress, errors }) => {
     return (
         <div className="max-w-md mx-auto">
             {/* Header */}
@@ -81,7 +81,7 @@ const RegisterForm = ({ handleNext, formData, handleChange, allowToViewSkills, e
                     <button
                         type="button"
                         onClick={handleNext}
-                        disabled={!allowToViewSkills()}
+                        disabled={!allowToViewAddress()}
                         className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
                     >
                         Next

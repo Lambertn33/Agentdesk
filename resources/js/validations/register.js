@@ -10,6 +10,14 @@ export const isUserFormValid = (formData) => {
     );
 }
 
+export const isAddressFormValid = (formData) => {
+    return (
+        formData.address &&
+        formData.city &&
+        formData.timezone
+    );
+}
+
 export const isSkillFormValid = (selectedSkills) => {
     return selectedSkills.length > 0;
 }

@@ -11,3 +11,4 @@ export { default as Checkbox } from './UI/Checkbox';
 export { default as RegisterSkills } from './Register/RegisterSkills';
 export { default as RegisterInterests } from './Register/RegisterInterests';
 export { default as RegisterForm } from './Register/RegisterForm';
+export { default as RegisterAddressForm } from './Register/RegisterAddress';

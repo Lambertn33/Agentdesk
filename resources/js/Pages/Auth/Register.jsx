@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Layout, RegisterSkills, RegisterInterests, RegisterForm } from '../../Components';
-import { isUserFormValid, isSkillFormValid, isInterestFormValid } from '../../validations';
+import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddressForm } from '../../Components';
+import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid } from '../../validations';
 
 const Register = ({ skillCategories, interests }) => {
     const [step, setStep] = useState(1);
@@ -11,6 +11,10 @@ const Register = ({ skillCategories, interests }) => {
         email: '',
         password: '',
         password_confirmation: '',
+        bio: '',
+        address: '',
+        city: '',
+        timezone: '',
         skills: [],
         interests: [],
     });
@@ -45,9 +49,13 @@ const Register = ({ skillCategories, interests }) => {
         setData('interests', data.interests.filter(id => id !== interestId));
     };
 
+    const allowToViewAddress = () => {
+        return isUserFormValid(data);
+    };
+
     // ALLOW/DISALLOW NEXT BUTTON
     const allowToViewSkills = () => {
-        return isUserFormValid(data);
+        return isAddressFormValid(data);
     };
 
     const allowToViewInterests = () => {
@@ -76,11 +84,11 @@ const Register = ({ skillCategories, interests }) => {
                         formData={data}
                         handleChange={handleUserFormChange}
                         handleNext={handleNext}
-                        allowToViewSkills={allowToViewSkills}
+                        allowToViewAddress={allowToViewAddress}
                         errors={errors}
                     />
                 );
-            case 2:
+            case 3:
                 return (
                     <RegisterSkills
                         skillCategories={skillCategories}
@@ -92,7 +100,7 @@ const Register = ({ skillCategories, interests }) => {
                         allowToViewInterests={allowToViewInterests}
                     />
                 );
-            case 3:
+            case 4:
                 return (
                     <RegisterInterests
                         interests={interests}
@@ -103,6 +111,17 @@ const Register = ({ skillCategories, interests }) => {
                         handleSubmit={handleSubmit}
                         allowToSubmit={allowToSubmit}
                         processing={processing}
+                    />
+                );
+            case 2:
+                return (
+                    <RegisterAddressForm
+                        formData={data}
+                        handleChange={handleUserFormChange}
+                        handleNext={handleNext}
+                        errors={errors}
+                        handlePrevious={handlePrevious}
+                        allowToViewSkills={allowToViewSkills}
                     />
                 );
             default:
