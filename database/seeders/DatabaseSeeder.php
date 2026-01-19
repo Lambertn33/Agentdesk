@@ -19,6 +19,7 @@ class DatabaseSeeder extends Seeder
             UsersSeeder::class,
             SkillsSeeder::class,
             InterestsSeeder::class,
+            ProfilesSeeder::class
         ]);
     }
 }
