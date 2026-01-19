@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
-import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddressForm } from '../../Components';
-import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid } from '../../validations';
+import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddressForm, RegisterSkillsExperience } from '../../Components';
+import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid } from '../../validations';
 
 const Register = ({ skillCategories, interests }) => {
     const [step, setStep] = useState(1);
@@ -16,6 +16,7 @@ const Register = ({ skillCategories, interests }) => {
         city: '',
         timezone: '',
         skills: [],
+        skillsExperience: [],
         interests: [],
     });
 
@@ -38,6 +39,13 @@ const Register = ({ skillCategories, interests }) => {
 
     const handleRemoveSkill = (skillId) => {
         setData('skills', data.skills.filter(id => id !== skillId));
+        if (data.skillsExperience && Array.isArray(data.skillsExperience)) {
+            setData('skillsExperience', data.skillsExperience.filter(item =>
+                item.skillId !== skillId &&
+                item.skillId !== String(skillId) &&
+                item.skillId !== Number(skillId)
+            ));
+        }
     };
 
     // ADD/REMOVE INTERESTS
@@ -49,6 +57,31 @@ const Register = ({ skillCategories, interests }) => {
         setData('interests', data.interests.filter(id => id !== interestId));
     };
 
+    // HANDLE SKILLS EXPERIENCE
+    const handleExperienceChange = (skillId, years) => {
+        const currentExperience = data.skillsExperience || [];
+        const existingIndex = currentExperience.findIndex(item =>
+            item.skillId === skillId || item.skillId === String(skillId) || item.skillId === Number(skillId)
+        );
+
+        if (existingIndex >= 0) {
+            const updated = [...currentExperience];
+            updated[existingIndex] = {
+                skillId: skillId,
+                years_of_experience: parseFloat(years)
+            };
+            setData('skillsExperience', updated);
+        } else {
+            setData('skillsExperience', [
+                ...currentExperience,
+                {
+                    skillId: skillId,
+                    years_of_experience: parseFloat(years)
+                }
+            ]);
+        }
+    };
+
     const allowToViewAddress = () => {
         return isUserFormValid(data);
     };
@@ -58,16 +91,21 @@ const Register = ({ skillCategories, interests }) => {
         return isAddressFormValid(data);
     };
 
-    const allowToViewInterests = () => {
+    const allowToViewSkillsExperience = () => {
         return isSkillFormValid(data.skills);
     };
 
+    const allowToViewInterests = () => {
+        return isSkillsExperienceFormValid(data.skills, data.skillsExperience);
+    };
+
     const allowToSubmit = () => {
-        return isUserFormValid(data) && isSkillFormValid(data.skills) && isInterestFormValid(data.interests);
+        return isUserFormValid(data) && isAddressFormValid(data) && isSkillFormValid(data.skills) && isSkillsExperienceFormValid(data.skills, data.skillsExperience) && isInterestFormValid(data.interests);
     };
 
     const handleSubmit = (e) => {
         e.preventDefault();
+
         post('/register', {
             preserveScroll: true,
             onSuccess: () => {
@@ -88,6 +126,17 @@ const Register = ({ skillCategories, interests }) => {
                         errors={errors}
                     />
                 );
+            case 2:
+                return (
+                    <RegisterAddressForm
+                        formData={data}
+                        handleChange={handleUserFormChange}
+                        handleNext={handleNext}
+                        errors={errors}
+                        handlePrevious={handlePrevious}
+                        allowToViewSkills={allowToViewSkills}
+                    />
+                );
             case 3:
                 return (
                     <RegisterSkills
@@ -97,10 +146,24 @@ const Register = ({ skillCategories, interests }) => {
                         selectedSkills={data.skills}
                         handleAddSkill={handleAddSkill}
                         handleRemoveSkill={handleRemoveSkill}
-                        allowToViewInterests={allowToViewInterests}
+                        allowToViewSkillsExperience={allowToViewSkillsExperience}
+
                     />
                 );
             case 4:
+                return (
+                    <RegisterSkillsExperience
+                        skillCategories={skillCategories}
+                        selectedSkills={data.skills}
+                        skillsExperience={data.skillsExperience}
+                        handleExperienceChange={handleExperienceChange}
+                        handlePrevious={handlePrevious}
+                        handleNext={handleNext}
+                        allowToViewInterests={allowToViewInterests}
+                        errors={errors}
+                    />
+                );
+            case 5:
                 return (
                     <RegisterInterests
                         interests={interests}
@@ -113,17 +176,7 @@ const Register = ({ skillCategories, interests }) => {
                         processing={processing}
                     />
                 );
-            case 2:
-                return (
-                    <RegisterAddressForm
-                        formData={data}
-                        handleChange={handleUserFormChange}
-                        handleNext={handleNext}
-                        errors={errors}
-                        handlePrevious={handlePrevious}
-                        allowToViewSkills={allowToViewSkills}
-                    />
-                );
+
             default:
                 return null;
         }

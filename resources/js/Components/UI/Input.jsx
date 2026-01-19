@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error, value, onChange }) => {
+const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error, value, onChange, min, max, step }) => {
     const borderClass = hasErrors
         ? 'border-red-500 dark:border-red-500'
         : 'border-[#e3e3e0] dark:border-[#3E3E3A]';
@@ -22,6 +22,9 @@ const Input = ({ id, label, name, type, autoComplete, required, placeholder, has
                 onChange={onChange}
                 autoComplete={autoComplete}
                 required={required}
+                min={min}
+                max={max}
+                step={step}
                 className={`w-full px-4 py-3 text-sm border ${borderClass} rounded-sm bg-[#FDFDFC] dark:bg-[#0a0a0a] text-[#1b1b18] dark:text-[#EDEDEC] focus:outline-none focus:ring-2 focus:ring-[#f53003] dark:focus:ring-[#FF4433] focus:border-transparent`}
                 placeholder={placeholder}
             />
@@ -44,8 +47,11 @@ Input.propTypes = {
     placeholder: PropTypes.string,
     hasErrors: PropTypes.bool,
     error: PropTypes.string,
-    value: PropTypes.string,
+    value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func,
+    min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    max: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
+    step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
 }
 
 Input.defaultProps = {
@@ -57,6 +63,9 @@ Input.defaultProps = {
     error: '',
     value: '',
     onChange: undefined,
+    min: undefined,
+    max: undefined,
+    step: undefined,
 }
 
 export default Input

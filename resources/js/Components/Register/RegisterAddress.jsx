@@ -90,19 +90,6 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                         </button>
                     </div>
                 </div>
-
-                {/* Register Link */}
-                <div className="mt-6 text-center">
-                    <p className="text-sm text-[#706f6c] dark:text-[#A1A09A]">
-                        Already have an account?{' '}
-                        <Link
-                            href="/login"
-                            className="font-medium text-[#f53003] dark:text-[#FF4433] hover:underline"
-                        >
-                            Sign in
-                        </Link>
-                    </p>
-                </div>
             </div>
         </div>
     );
