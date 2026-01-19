@@ -61,6 +61,9 @@ class AuthController extends Controller
             'timezone' => 'required|string',
             'skillsExperience' => 'required|array|min:1',
             'interests' => 'required|array|min:1',
+            'day_of_week' => 'required|string',
+            'time_block' => 'required|string',
+            'mode' => 'required|string',
         ]);
 
         try {
@@ -77,11 +80,16 @@ class AuthController extends Controller
             if (!empty($data['interests'])) {
                 $this->authServices->attachProfileInterests($profile, $data['interests']);
             }
+
+            if (!empty($data['day_of_week']) && !empty($data['time_block']) && !empty($data['mode'])) {
+                $this->authServices->createProfileAvailability($profile, $data['day_of_week'], $data['time_block'], $data['mode']);
+            }
             DB::commit();
             Auth::login($user);
             return redirect()->route('home');
 
         } catch (\Throwable $th) {
+            throw $th;
             DB::rollBack();
             return back()->withErrors([
                 'email' => 'An error occurred while registering. Please try again.',

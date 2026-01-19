@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
-use Illuminate\Database\Eloquent\Relations\HasMany;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 
 class Profile extends Model
 {
@@ -33,8 +33,8 @@ class Profile extends Model
         return $this->belongsToMany(Interest::class, 'profile_interests', 'profile_id', 'interest_id');
     }
 
-    public function availabilities(): HasMany
+    public function availability(): HasOne
     {
-        return $this->hasMany(ProfileAvailability::class);
+        return $this->hasOne(ProfileAvailability::class, 'profile_id', 'id');
     }
 }

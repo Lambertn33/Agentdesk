@@ -55,12 +55,11 @@ class AuthServices
         $profile->interests()->sync($interests);
     }
 
-    // public function createProfileAvailabilities(array $data) {
-    //     $profile = $this->createProfile($data);
-    //     foreach ($data['availabilities'] as $availability) {
-    //         $profile->availabilities()->create([
-    //             'availability_id' => $availability,
-    //         ]);
-    //     }
-    // }
+    public function createProfileAvailability(Profile $profile, string $dayOfWeek, string $timeBlock, string $mode) {
+        $profile->availability()->create([
+            'day_of_week' => $dayOfWeek,
+            'time_block' => $timeBlock,
+            'mode' => $mode,
+        ]);
+    }
 }

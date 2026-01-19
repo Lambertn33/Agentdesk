@@ -55,6 +55,9 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                         onChange={handleChange}
                         options={getGmts().map(gmt => ({ value: gmt, label: gmt }))}
                         required
+                        placeholder="Select timezone"
+                        hasErrors={!!errors?.timezone}
+                        error={errors?.timezone}
                     />
 
                     {/* Day of Week */}
@@ -66,6 +69,9 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                         onChange={handleChange}
                         options={getDayOfWeek().map(dayOfWeek => ({ value: dayOfWeek, label: dayOfWeek }))}
                         required
+                        placeholder="Select day of week"
+                        hasErrors={!!errors?.day_of_week}
+                        error={errors?.day_of_week}
                     />
 
                     {/* Time Block */}
@@ -77,6 +83,9 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                         onChange={handleChange}
                         options={getTimeBlock().map(timeBlock => ({ value: timeBlock, label: timeBlock }))}
                         required
+                        placeholder="Select time block"
+                        hasErrors={!!errors?.time_block}
+                        error={errors?.time_block}
                     />
 
                     {/* Mode */}
@@ -88,6 +97,9 @@ const RegisterAddressForm = ({ handleNext, formData, handleChange, allowToViewSk
                         onChange={handleChange}
                         options={getMode().map(mode => ({ value: mode, label: mode }))}
                         required
+                        placeholder="Select mode"
+                        hasErrors={!!errors?.mode}
+                        error={errors?.mode}
                     />
                     <Textarea
                         id="bio"

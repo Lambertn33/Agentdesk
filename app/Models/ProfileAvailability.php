@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class ProfileAvailability extends Model
 {
@@ -34,4 +35,9 @@ class ProfileAvailability extends Model
         'time_block',
         'mode'
     ];
+
+    public function profile(): BelongsTo
+    {
+        return $this->belongsTo(Profile::class);
+    }
 }

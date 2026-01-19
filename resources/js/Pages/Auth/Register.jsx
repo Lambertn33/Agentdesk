@@ -5,7 +5,7 @@ import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddres
 import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid, isValidEmail } from '../../Validations';
 
 const Register = ({ skillCategories, interests }) => {
-    const [step, setStep] = useState(2);
+    const [step, setStep] = useState(1);
     const [emailVerified, setEmailVerified] = useState(false);
     const [emailVerifying, setEmailVerifying] = useState(false);
     const [emailError, setEmailError] = useState('');
@@ -19,6 +19,9 @@ const Register = ({ skillCategories, interests }) => {
         address: '',
         city: '',
         timezone: '',
+        day_of_week: '',
+        time_block: '',
+        mode: '',
         skills: [],
         skillsExperience: [],
         interests: [],

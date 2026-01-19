@@ -13,8 +13,17 @@ export const isUserFormValid = (formData) => {
 export const isAddressFormValid = (formData) => {
     return (
         formData.address &&
+        formData.address.trim() !== '' &&
         formData.city &&
-        formData.timezone
+        formData.city.trim() !== '' &&
+        formData.timezone &&
+        formData.timezone.trim() !== '' &&
+        formData.day_of_week &&
+        formData.day_of_week.trim() !== '' &&
+        formData.time_block &&
+        formData.time_block.trim() !== '' &&
+        formData.mode &&
+        formData.mode.trim() !== ''
     );
 }
 
