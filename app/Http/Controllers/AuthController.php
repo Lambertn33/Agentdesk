@@ -7,7 +7,7 @@ use Inertia\Inertia;
 use Illuminate\Support\Facades\Auth;
 use App\Models\SkillCategory;
 use App\Models\Interest;
-
+use App\Models\User;
 class AuthController extends Controller
 {
     public function getlogin()
@@ -40,11 +40,11 @@ class AuthController extends Controller
 
     public function postregister(Request $request)
     {
-        // $request->validate([
-        //     'name' => 'required|string|max:255',
-        //     'email' => 'required|email|unique:users',
-        //     'password' => 'required|string|min:8|confirmed',
-        // ]);
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:users',
+            'password' => 'required|string|min:8|confirmed',
+        ]);
         dd($request->all());
         
     }
@@ -53,5 +53,11 @@ class AuthController extends Controller
     {
         Auth::logout();
         return back();
+    }
+
+    public function verifyEmailExistence(Request $request)
+    {
+       $checkEmail = User::where('email', $request->email)->exists();
+       return response()->json(['exists' => $checkEmail]);
     }
 }

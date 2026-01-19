@@ -63,7 +63,7 @@ export const isSkillsExperienceFormValid = (selectedSkills, skillsExperience) =>
     });
 }
 
-const isValidEmail = (email) => {
+export const isValidEmail = (email) => {
     const regex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return regex.test(email);
 }

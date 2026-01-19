@@ -2,7 +2,7 @@ import React from 'react';
 import { Input } from '../index';
 import { Link } from '@inertiajs/react';
 
-const RegisterForm = ({ handleNext, formData, handleChange, allowToViewAddress, errors }) => {
+const RegisterForm = ({ handleNext, formData, handleChange, allowToViewAddress, errors, handleVerifyEmail, emailVerifying }) => {
     return (
         <div className="max-w-md mx-auto">
             {/* Header */}
@@ -33,19 +33,27 @@ const RegisterForm = ({ handleNext, formData, handleChange, allowToViewAddress, 
                         error={errors?.name}
                     />
                     {/* Email Field */}
-                    <Input
-                        id="email"
-                        label="Email Address"
-                        name="email"
-                        type="email"
-                        value={formData.email}
-                        onChange={handleChange}
-                        autoComplete="email"
-                        required
-                        placeholder="you@example.com"
-                        hasErrors={!!errors?.email}
-                        error={errors?.email}
-                    />
+                    <div>
+                        <Input
+                            id="email"
+                            label="Email Address"
+                            name="email"
+                            type="email"
+                            value={formData.email}
+                            onChange={handleChange}
+                            onBlur={handleVerifyEmail}
+                            autoComplete="email"
+                            required
+                            placeholder="you@example.com"
+                            hasErrors={!!errors?.email}
+                            error={errors?.email}
+                        />
+                        {emailVerifying && (
+                            <p className="text-sm text-[#706f6c] dark:text-[#A1A09A] mt-1">
+                                Verifying email...
+                            </p>
+                        )}
+                    </div>
 
                     {/* Password Field */}
                     <Input

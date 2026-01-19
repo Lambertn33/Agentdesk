@@ -1,7 +1,7 @@
 import React from 'react'
 import PropTypes from 'prop-types';
 
-const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error, value, onChange, min, max, step }) => {
+const Input = ({ id, label, name, type, autoComplete, required, placeholder, hasErrors, error, value, onChange, onBlur, min, max, step }) => {
     const borderClass = hasErrors
         ? 'border-red-500 dark:border-red-500'
         : 'border-[#e3e3e0] dark:border-[#3E3E3A]';
@@ -20,6 +20,7 @@ const Input = ({ id, label, name, type, autoComplete, required, placeholder, has
                 type={type}
                 value={value || ''}
                 onChange={onChange}
+                onBlur={onBlur}
                 autoComplete={autoComplete}
                 required={required}
                 min={min}
@@ -49,6 +50,7 @@ Input.propTypes = {
     error: PropTypes.string,
     value: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     onChange: PropTypes.func,
+    onBlur: PropTypes.func,
     min: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     max: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),
     step: PropTypes.oneOfType([PropTypes.string, PropTypes.number]),

@@ -14,5 +14,6 @@ Route::controller(AuthController::class)->group(function () {
         Route::get('/', 'getregister')->name('register.get');
         Route::post('/', 'postregister')->name('register.post');
     });
+    Route::post('/verify-email', 'verifyEmailExistence')->name('verify.email');
     Route::post('/logout', 'postlogout')->name('logout.post')->middleware('auth');
 });

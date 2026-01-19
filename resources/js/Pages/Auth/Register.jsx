@@ -1,10 +1,14 @@
 import React, { useState } from 'react';
 import { useForm } from '@inertiajs/react';
+import axios from 'axios';
 import { Layout, RegisterSkills, RegisterInterests, RegisterForm, RegisterAddressForm, RegisterSkillsExperience } from '../../Components';
-import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid } from '../../validations';
+import { isUserFormValid, isSkillFormValid, isInterestFormValid, isAddressFormValid, isSkillsExperienceFormValid, isValidEmail } from '../../validations';
 
 const Register = ({ skillCategories, interests }) => {
     const [step, setStep] = useState(1);
+    const [emailVerified, setEmailVerified] = useState(false);
+    const [emailVerifying, setEmailVerifying] = useState(false);
+    const [emailError, setEmailError] = useState('');
 
     const { data, setData, post, processing, errors } = useForm({
         name: '',
@@ -22,6 +26,11 @@ const Register = ({ skillCategories, interests }) => {
 
     const handleUserFormChange = (e) => {
         setData(e.target.name, e.target.value);
+        // Reset email verification status when email changes
+        if (e.target.name === 'email') {
+            setEmailVerified(false);
+            setEmailError('');
+        }
     };
 
     const handleNext = () => {
@@ -83,7 +92,7 @@ const Register = ({ skillCategories, interests }) => {
     };
 
     const allowToViewAddress = () => {
-        return isUserFormValid(data);
+        return isUserFormValid(data) && emailVerified;
     };
 
     // ALLOW/DISALLOW NEXT BUTTON
@@ -101,6 +110,33 @@ const Register = ({ skillCategories, interests }) => {
 
     const allowToSubmit = () => {
         return isUserFormValid(data) && isAddressFormValid(data) && isSkillFormValid(data.skills) && isSkillsExperienceFormValid(data.skills, data.skillsExperience) && isInterestFormValid(data.interests);
+    };
+
+    const handleVerifyEmail = async () => {
+        if (!isValidEmail(data.email)) {
+            setEmailVerified(false);
+            setEmailError('Invalid email address');
+            return;
+        }
+
+        setEmailVerifying(true);
+        try {
+            const response = await axios.post('/verify-email', {
+                email: data.email
+            });
+
+            if (response.data.exists) {
+                setEmailVerified(false);
+                setEmailError('This email is already registered. Please use a different email.');
+            } else {
+                setEmailVerified(true);
+                setEmailError('');
+            }
+        } catch (error) {
+            setEmailVerified(false);
+        } finally {
+            setEmailVerifying(false);
+        }
     };
 
     const handleSubmit = (e) => {
@@ -123,7 +159,9 @@ const Register = ({ skillCategories, interests }) => {
                         handleChange={handleUserFormChange}
                         handleNext={handleNext}
                         allowToViewAddress={allowToViewAddress}
-                        errors={errors}
+                        errors={{ ...errors, email: emailError || errors?.email }}
+                        handleVerifyEmail={handleVerifyEmail}
+                        emailVerifying={emailVerifying}
                     />
                 );
             case 2:
