@@ -1,8 +1,20 @@
 import React from 'react';
-import { Link, Form } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import { Layout, Input } from '../../Components';
+import { useForm } from '@inertiajs/react';
 
 const Login = () => {
+    const { data, setData, post, processing, errors } = useForm({
+        email: '',
+        password: '',
+    });
+
+    const handleSubmit = (e) => {
+        e.preventDefault();
+        post('/login', {
+            preserveScroll: true,
+        });
+    };
     return (
         <Layout>
             <div className="max-w-md mx-auto">
@@ -18,51 +30,48 @@ const Login = () => {
 
                 {/* Login Form */}
                 <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8">
-                    <Form action="/login" method="post">
-                        {({
-                            errors,
-                            hasErrors,
-                            processing,
-                            submit
-                        }) => (
-                            <div className="space-y-6">
-                                {/* Email Field */}
-                                <Input
-                                    htmlFor="email"
-                                    label="Email Address"
-                                    name="email"
-                                    type="email"
-                                    autoComplete="email"
-                                    required={false}
-                                    placeholder="you@example.com"
-                                    hasErrors={errors.email}
-                                    error={errors.email}
-                                />
+                    <form action="/login" method="post" onSubmit={handleSubmit}>
+                        <div className="space-y-6">
+                            {/* Email Field */}
+                            <Input
+                                htmlFor="email"
+                                label="Email Address"
+                                name="email"
+                                type="email"
+                                autoComplete="email"
+                                required={false}
+                                placeholder="you@example.com"
+                                hasErrors={errors.email}
+                                error={errors.email}
+                                value={data.email}
+                                onChange={(e) => setData('email', e.target.value)}
+                            />
 
-                                {/* Password Field */}
-                                <Input
-                                    htmlFor="password"
-                                    label="Password"
-                                    name="password"
-                                    type="password"
-                                    autoComplete="current-password"
-                                    required={false}
-                                    placeholder="Enter your password"
-                                    hasErrors={errors.password}
-                                    error={errors.password}
-                                />
+                            {/* Password Field */}
+                            <Input
+                                htmlFor="password"
+                                label="Password"
+                                name="password"
+                                type="password"
+                                autoComplete="current-password"
+                                required={false}
+                                placeholder="Enter your password"
+                                hasErrors={errors.password}
+                                error={errors.password}
+                                value={data.password}
+                                onChange={(e) => setData('password', e.target.value)}
+                            />
 
-                                {/* Submit Button */}
-                                <button
-                                    type="submit"
-                                    disabled={processing}
-                                    className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
-                                >
-                                    {processing ? 'Signing in...' : 'Sign In'}
-                                </button>
-                            </div>
-                        )}
-                    </Form>
+                            {/* Submit Button */}
+                            <button
+                                type="submit"
+                                disabled={processing}
+                                className="w-full inline-flex items-center justify-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                            >
+                                {processing ? 'Signing in...' : 'Sign In'}
+                            </button>
+                        </div>
+                    </form>
 
                     {/* Register Link */}
                     <div className="mt-6 text-center">
