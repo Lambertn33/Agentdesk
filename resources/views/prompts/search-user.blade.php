@@ -24,6 +24,11 @@ tool with the appropriate parameters. You can search by:
 - if there are no developers skilled directly in the given skills, don't give the results of developers skilled In
 react and developers skilled in Typescript.. just return empty results since the AND condition is not met
 
+2. Please note that there might be cases where the search query is like: I want to see professionals skilled in Java and
+PHP.
+you should automatically know that the professionals that are being said are the users. even Developers, Talents, ....
+all means users. you should keep using the search-user tool
+
 ## Important Notes
 - Extract ALL criteria mentioned in the query - don't limit to just skills
 - Only include parameters that are actually mentioned in the query
