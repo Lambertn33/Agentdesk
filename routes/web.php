@@ -6,6 +6,7 @@ use App\Http\Controllers\AuthController;
 use App\Services\SearchUserServices;
 use Prism\Prism\Facades\Prism;
 use Prism\Prism\Enums\Provider;
+use App\AiAgents\SearchProfileAgent;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(AuthController::class)->group(function () {
@@ -22,18 +23,11 @@ Route::controller(AuthController::class)->group(function () {
 });
 
 Route::get('/search-user', function() {
-   try {
-    $searchUserTool = SearchUserServices::searchUserTool();
-    $response = Prism::text()
-        ->using(Provider::OpenAI, 'gpt-4')
-        ->withTools([$searchUserTool])
-        ->withMaxSteps(2)
-        ->withPrompt('Find me developer with skills in React and TypeScript')
-        ->asText();
+    $searchProfileAgent = new SearchProfileAgent();
+    $response = $searchProfileAgent->message('Can we get users who are skilled in Kubernetes?')->respond();
+    return response()->json($response->users);
+});
 
-    echo "No error";
-    echo $response->text;
-   } catch (\Throwable $th) {
-    dd($th);
-   }
+Route::get("/users", function() {
+    return \App\Models\User::with('profile.skills')->with('profile.interests')->get();
 });

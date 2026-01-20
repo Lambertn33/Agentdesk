@@ -20,7 +20,7 @@ class ProfilesSeeder extends Seeder
     public function run(): void
     {
         $faker = Faker::create();
-        $users = User::doesntHave('profile')->get();
+        $users = User::doesntHave('profile')->whereNot('role', User::ADMIN)->get();
 
         if ($users->isEmpty()) {
             $this->command->info('No users without profiles found.');
