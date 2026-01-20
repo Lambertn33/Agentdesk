@@ -46,6 +46,11 @@ class SearchUserServices
             $criteria['skills'] ?? [],
             $criteria['skillsMode'] ?? 'OR'
         );
+        self::applyTimezoneFilter(
+            $query,
+            $criteria['timezone'] ?? [],
+            $criteria['timezoneMode'] ?? 'OR'
+        );
 
         $users = $query->limit(25)->get();
 
@@ -113,6 +118,8 @@ class SearchUserServices
             Log::info('decodeCriteria: invalid payload', ['payload' => $payload]);
             return null;
         }
+
+        // GET SKILLS
     
         $skills = self::normalizeStringArray($data['skills'] ?? []);
     
@@ -120,16 +127,25 @@ class SearchUserServices
         $mode = (count($skills) <= 1)
             ? 'SINGLE'
             : (in_array($modeRaw, ['AND', 'OR'], true) ? $modeRaw : 'OR');
+
+        // GET TIMEZONE
+        
+        $timezones = self::normalizeStringArray($data['timezone'] ?? $data['timezones'] ?? []);
+        $timezones = self::normalizeTimezones($timezones);
+
+        $tzModeRaw = strtoupper(trim((string)($data['timezoneMode'] ?? $data['tzMode'] ?? $data['modeTimezone'] ?? '')));
+        $timezoneMode = (count($timezones) <= 1)
+            ? 'SINGLE'
+            : (in_array($tzModeRaw, ['AND', 'OR'], true) ? $tzModeRaw : 'OR');
     
         return [
             'skills' => $skills,
             'skillsMode' => $mode,
+            'timezone' => $timezones,
+            'timezoneMode' => $timezoneMode,
         ];
     }
     
-
-    
-
     private static function normalizeStringArray($value): array
     {
         if (!is_array($value)) return [];
@@ -138,6 +154,30 @@ class SearchUserServices
             $value
         ), fn ($s) => $s !== ''));
     }
+
+    private static function normalizeTimezones(array $values): array
+    {
+        $out = [];
+
+        foreach ($values as $raw) {
+            $tz = strtoupper(trim((string) $raw));
+            $tz = str_replace(['UTC', 'GMT'], 'GMT', $tz);
+            $tz = preg_replace('/\s+/', '', $tz); // remove spaces
+
+            // accept "+2", "-10", "GMT+2", "GMT-10"
+            if (preg_match('/^(GMT)?([+-])(\d{1,2})$/', $tz, $m)) {
+                $sign = $m[2];
+                $num  = (int) $m[3];
+
+                if ($num >= 0 && $num <= 12) {
+                    $out[] = "GMT{$sign}{$num}";
+                }
+            }
+        }
+
+        return array_values(array_unique($out));
+    }
+
 
     private static function applySkillsFilter(Builder $query, array $skills, string $mode = 'OR'): void
     {
@@ -178,5 +218,28 @@ class SearchUserServices
             });
         }
     }
-    
+
+    private static function applyTimezoneFilter(Builder $query, array $timezones, string $mode = 'OR'): void
+    {
+        if (empty($timezones)) return;
+
+        if ($mode === 'OR') {
+            $query->whereHas('profile', function ($q) use ($timezones) {
+                $q->whereIn('timezone', $timezones);
+            });
+            return;
+        }
+
+        // AND: a profile can't have two timezones at once, so AND only makes sense if same timezone repeated
+        // We'll treat AND as "must match all" → if >1 unique timezone, force empty results
+        $unique = array_values(array_unique($timezones));
+        if (count($unique) > 1) {
+            $query->whereRaw('1 = 0');
+            return;
+        }
+
+        $query->whereHas('profile', function ($q) use ($unique) {
+            $q->where('timezone', $unique[0]);
+        });
+    } 
 }
