@@ -2,7 +2,7 @@ import React from 'react'
 import PropTypes from 'prop-types';
 import { Textarea } from '../index';
 
-const Query = ({ title, subtitle, label, placeholder, buttonText }) => {
+const Query = ({ title, subtitle, label, placeholder, buttonText, onSubmit, value, onChange, disabled }) => {
     return (
         <div className="bg-white dark:bg-[#161615] rounded-lg border border-[#e3e3e0] dark:border-[#3E3E3A] shadow-sm p-6 sm:p-8 mb-8">
             <div className="mb-6">
@@ -13,19 +13,20 @@ const Query = ({ title, subtitle, label, placeholder, buttonText }) => {
                     {subtitle}
                 </p>
             </div>
-            <form>
+            <form onSubmit={onSubmit}>
                 <Textarea
                     id="query"
                     name="query"
-                    value=""
-                    onChange={() => { }}
+                    onChange={onChange}
                     required={true}
                     placeholder={placeholder}
                     hasErrors={false}
                     error=""
                     label={label}
+                    value={value}
                 />
                 <button
+                    disabled={disabled}
                     type="submit"
                     className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
                 >

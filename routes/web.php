@@ -3,10 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;    
 use App\Http\Controllers\AuthController;
-use App\Services\SearchUserServices;
-use Prism\Prism\Facades\Prism;
-use Prism\Prism\Enums\Provider;
-use App\AiAgents\SearchProfileAgent;
+use App\Http\Controllers\AI\SearchUserController;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(AuthController::class)->group(function () {
@@ -22,10 +19,8 @@ Route::controller(AuthController::class)->group(function () {
     Route::post('/logout', 'postlogout')->name('logout.post')->middleware('auth');
 });
 
-Route::get('/search-user', function() {
-    $searchProfileAgent = new SearchProfileAgent();
-    $response = $searchProfileAgent->message('Can we get users who are skilled in Kubernetes?')->respond();
-    return response()->json($response->users);
+Route::controller(SearchUserController::class)->prefix('search-user')->group(function() {
+    Route::post('/', 'searchUser');
 });
 
 Route::get("/users", function() {

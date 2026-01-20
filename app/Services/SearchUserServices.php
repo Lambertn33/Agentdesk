@@ -89,32 +89,44 @@ class SearchUserServices
     }
 
     private static function decodeCriteria($payload): ?array
-{
-    // If payload is already an array (common with tool calls)
-    if (is_array($payload)) {
-        $data = $payload;
-    } else {
-        // If payload is a JSON string
-        $data = json_decode((string) $payload, true);
+    {
+        // 1) If tool already passed an array
+        if (is_array($payload)) {
+            $data = $payload;
+        } else {
+            $payloadStr = trim((string) $payload);
+    
+            // 2) Try JSON
+            $data = json_decode($payloadStr, true);
+    
+            // 3) If still not JSON, treat as comma-separated skills
+            if (!is_array($data)) {
+                $skills = array_values(array_filter(array_map('trim', preg_split('/,|\bor\b|\band\b/i', $payloadStr))));
+                return [
+                    'skills' => $skills,
+                    'skillsMode' => count($skills) <= 1 ? 'SINGLE' : 'OR',
+                ];
+            }
+        }
+    
+        if (!is_array($data)) {
+            Log::info('decodeCriteria: invalid payload', ['payload' => $payload]);
+            return null;
+        }
+    
+        $skills = self::normalizeStringArray($data['skills'] ?? []);
+    
+        $modeRaw = strtoupper(trim((string)($data['skillsMode'] ?? $data['mode'] ?? '')));
+        $mode = (count($skills) <= 1)
+            ? 'SINGLE'
+            : (in_array($modeRaw, ['AND', 'OR'], true) ? $modeRaw : 'OR');
+    
+        return [
+            'skills' => $skills,
+            'skillsMode' => $mode,
+        ];
     }
-
-    if (!is_array($data)) {
-        Log::info('decodeCriteria: invalid payload', ['payload' => $payload]);
-        return null;
-    }
-
-    $skills = self::normalizeStringArray($data['skills'] ?? []);
-
-    $modeRaw = strtoupper(trim((string)($data['skillsMode'] ?? $data['mode'] ?? '')));
-    $mode = (count($skills) <= 1)
-        ? 'SINGLE'
-        : (in_array($modeRaw, ['AND', 'OR'], true) ? $modeRaw : 'OR');
-
-    return [
-        'skills' => $skills,
-        'skillsMode' => $mode,
-    ];
-}
+    
 
     
 
