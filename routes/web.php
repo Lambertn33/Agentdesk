@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AI\SearchUserController;
 
+
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::controller(AuthController::class)->group(function () {
     Route::prefix('login')->group(function () {
@@ -22,6 +23,7 @@ Route::controller(AuthController::class)->group(function () {
 Route::controller(SearchUserController::class)->prefix('search-user')->group(function() {
     Route::post('/', 'searchUser');
 });
+
 
 Route::get("/users", function() {
     return \App\Models\User::with('profile.skills')->with('profile.interests')->get();

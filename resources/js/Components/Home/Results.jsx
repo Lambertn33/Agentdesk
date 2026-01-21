@@ -1,7 +1,7 @@
 import React from 'react'
 
 const Results = ({ status, errorMsg, processing, hasSearched, results, handleSelectUser }) => {
-    const selectUser = (user) => handleSelectUser(user.id, user.name);
+    const selectUser = (user) => handleSelectUser(user);
 
     return (
         <>

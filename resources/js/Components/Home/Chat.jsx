@@ -1,19 +1,22 @@
+import axios from "axios";
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { router } from "@inertiajs/react";
 
 const UserChatModal = ({ open, onClose, user }) => {
-    const [message, setMessage] = useState("");
-    const [messages, setMessages] = useState(() => []);
-    const [sending, setSending] = useState(false);
     const bottomRef = useRef(null);
+
+    const [message, setMessage] = useState("");
+    const [messages, setMessages] = useState([]);
+    const [sending, setSending] = useState(false);
 
     const title = useMemo(() => {
         const name = user?.names ?? "this person";
         return `What would you like to know about ${name}?`;
-    }, [user]);
+    }, [user?.names]);
 
+    // Reset chat when modal opens
     useEffect(() => {
-        if (!open) return;
+        if (!open || !user) return;
+
         setMessages([
             {
                 role: "assistant",
@@ -21,60 +24,77 @@ const UserChatModal = ({ open, onClose, user }) => {
                     "Ask about availability, skills experience, interests, or what else they can help with.",
             },
         ]);
-        setMessage("");
-    }, [open]);
 
+        setMessage("");
+    }, [open, user?.id]);
+
+    // Auto-scroll
     useEffect(() => {
         if (!open) return;
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, open]);
 
+    // Safe early return (hooks already ran)
     if (!open || !user) return null;
 
     const send = async (e) => {
         e.preventDefault();
-        const text = message.trim();
-        if (!text) return;
 
-        const userMsg = { role: "user", text };
-        setMessages((prev) => [...prev, userMsg]);
+        const text = message.trim();
+        if (!text || sending) return;
+
+        // Show user message immediately
+        setMessages((prev) => [...prev, { role: "user", text }]);
         setMessage("");
         setSending(true);
 
-        // Inertia POST to backend: you implement this route/controller
-        router.post(
-            "/ai/user-chat",
-            { user_id: user.id, message: text },
-            {
-                preserveScroll: true,
-                onSuccess: (page) => {
-                    // Expect backend to return flash.assistantReply or props.assistantReply
-                    const reply =
-                        page?.props?.flash?.assistantReply ??
-                        page?.props?.assistantReply ??
-                        null;
+        try {
+            const res = await axios.post('/api/get-user', {
+                message,
+                userId: user.id
+            });
+            console.log(res);
+            // const res = await fetch("/get-user", {
+            //     method: "POST",
+            //     headers: {
+            //         "Content-Type": "application/json",
+            //         "X-CSRF-TOKEN": document
+            //             .querySelector('meta[name="csrf-token"]')
+            //             .getAttribute("content"),
+            //     },
+            //     body: JSON.stringify({
+            //         userId: user.id,
+            //         message: text,
+            //     }),
+            // });
 
-                    if (reply) {
-                        setMessages((prev) => [...prev, { role: "assistant", text: reply }]);
-                    } else {
-                        setMessages((prev) => [
-                            ...prev,
-                            {
-                                role: "assistant",
-                                text: "I didn't get a reply. Try again.",
-                            },
-                        ]);
-                    }
+            // if (!res.ok) {
+            //     throw new Error("Request failed");
+            // }
+
+            // const json = await res.json();
+
+            // setMessages((prev) => [
+            //     ...prev,
+            //     {
+            //         role: "assistant",
+            //         text:
+            //             json?.reply ??
+            //             "I couldn't find an answer based on the available information.",
+            //     },
+            // ]);
+        } catch (err) {
+            console.log(err);
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    text: "Something went wrong. Please try again.",
                 },
-                onError: () => {
-                    setMessages((prev) => [
-                        ...prev,
-                        { role: "assistant", text: "Something went wrong. Try again." },
-                    ]);
-                },
-                onFinish: () => setSending(false),
-            }
-        );
+            ]);
+        } finally {
+            setSending(false);
+        }
     };
 
     return (
@@ -85,8 +105,9 @@ const UserChatModal = ({ open, onClose, user }) => {
                 onClick={onClose}
             />
 
-            {/* Panel */}
+            {/* Modal */}
             <div className="relative w-[min(720px,95vw)] rounded-xl bg-[#0f0f0f] text-white shadow-xl">
+                {/* Header */}
                 <div className="flex items-center justify-between border-b border-white/10 p-4">
                     <div>
                         <div className="text-lg font-semibold">{title}</div>
@@ -106,10 +127,13 @@ const UserChatModal = ({ open, onClose, user }) => {
                     {messages.map((m, idx) => (
                         <div
                             key={idx}
-                            className={`flex ${m.role === "user" ? "justify-end" : "justify-start"}`}
+                            className={`flex ${m.role === "user" ? "justify-end" : "justify-start"
+                                }`}
                         >
                             <div
-                                className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${m.role === "user" ? "bg-[#f53003]" : "bg-white/10"
+                                className={`max-w-[85%] rounded-lg px-3 py-2 text-sm ${m.role === "user"
+                                    ? "bg-[#f53003]"
+                                    : "bg-white/10"
                                     }`}
                             >
                                 {m.text}
@@ -120,7 +144,10 @@ const UserChatModal = ({ open, onClose, user }) => {
                 </div>
 
                 {/* Input */}
-                <form onSubmit={send} className="border-t border-white/10 p-4 flex gap-2">
+                <form
+                    onSubmit={send}
+                    className="border-t border-white/10 p-4 flex gap-2"
+                >
                     <input
                         value={message}
                         onChange={(e) => setMessage(e.target.value)}
