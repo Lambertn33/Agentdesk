@@ -43,15 +43,14 @@ const Index = ({ auth }) => {
         <div className="w-2/5">
           <HomeQuery
             title="Search for Skilled Professionals"
-            subtitle="Tell us what skills, expertise, or qualifications you're looking for. We'll find matching professionals you can reach out to."
+            subtitle="Tell us what skills, interests, or timezone you're looking for. We'll find matching professionals you can reach out to."
             label="What are you looking for?"
-            placeholder={`Describe the skills, expertise, or qualifications you need...
+            placeholder={`Describe the skills, interests, or timezone you need...
 
-              Examples:
-              • Find developers skilled in React and TypeScript
-              • Show me managers with 5+ years of experience
-              • I need agents available in the US timezone
-              • Find professionals with marketing and SEO skills`}
+Examples:
+  • Find users in GMT+1 skilled in React or PHP and interested in Startup ideas
+  • I need agents available in the GMT -4 timezone
+  • Find professionals available between GMT +2 and GMT +6 timezone`}
             buttonText={processing ? 'Searching...' : 'Search Professionals'}
             onSubmit={submit}
             value={data.prompt}
