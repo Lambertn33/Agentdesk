@@ -52,6 +52,11 @@ class SearchUserServices
             $criteria['timezoneMode'] ?? 'OR'
         );
 
+        self::applyInterestsFilter(
+            $query, 
+            $criteria['interests'] ?? [], 
+            $criteria['interestsMode'] ?? 'OR');
+
         $users = $query->limit(25)->get();
 
         return [
@@ -124,7 +129,7 @@ class SearchUserServices
         $skills = self::normalizeStringArray($data['skills'] ?? []);
     
         $modeRaw = strtoupper(trim((string)($data['skillsMode'] ?? $data['mode'] ?? '')));
-        $mode = (count($skills) <= 1)
+        $skillsMode = (count($skills) <= 1)
             ? 'SINGLE'
             : (in_array($modeRaw, ['AND', 'OR'], true) ? $modeRaw : 'OR');
 
@@ -137,12 +142,24 @@ class SearchUserServices
         $timezoneMode = (count($timezones) <= 1)
             ? 'SINGLE'
             : (in_array($tzModeRaw, ['AND', 'OR'], true) ? $tzModeRaw : 'OR');
+
+        
+        // GET INTERESTS
+        $interests = self::normalizeStringArray($data['interests'] ?? []);
+        $interestModeRaw = strtoupper(trim((string)($data['interestsMode'] ?? $data['interestMode'] ?? '')));
+        $interestsMode = (count($interests) <= 1)
+            ? 'SINGLE'
+            : (in_array($interestModeRaw, ['AND', 'OR'], true) ? $interestModeRaw : 'OR');
     
         return [
             'skills' => $skills,
-            'skillsMode' => $mode,
+            'skillsMode' => $skillsMode,
+
             'timezone' => $timezones,
             'timezoneMode' => $timezoneMode,
+
+            'interests' => $interests,
+            'interestsMode' => $interestsMode
         ];
     }
     
@@ -242,4 +259,44 @@ class SearchUserServices
             $q->where('timezone', $unique[0]);
         });
     } 
+
+    private static function applyInterestsFilter(Builder $query, array $interests, string $mode = 'OR'): void
+    {
+        if (empty($interests)) return;
+
+        // Resolve IDs per interest name (LIKE matching)
+        $idSets = [];
+
+        foreach ($interests as $interestName) {
+            $ids = Interest::query()
+                ->where('name', 'LIKE', '%' . $interestName . '%')
+                ->pluck('id')
+                ->all();
+
+            // if user asks for an interest that doesn't exist, no results possible
+            if (empty($ids)) {
+                $query->whereRaw('1 = 0');
+                return;
+            }
+
+            $idSets[] = $ids;
+        }
+
+        if ($mode === 'OR') {
+            $flatIds = array_values(array_unique(array_merge(...$idSets)));
+
+            $query->whereHas('profile.interests', function ($q) use ($flatIds) {
+                $q->whereIn('interests.id', $flatIds);
+            });
+
+            return;
+        }
+
+        // SINGLE / AND => must match all interests
+        foreach ($idSets as $idsForOneInterest) {
+            $query->whereHas('profile.interests', function ($q) use ($idsForOneInterest) {
+                $q->whereIn('interests.id', $idsForOneInterest);
+            });
+        }
+    }
 }
