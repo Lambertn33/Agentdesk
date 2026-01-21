@@ -1,6 +1,8 @@
 import React from 'react'
 
-const Results = ({ status, errorMsg, processing, hasSearched, results }) => {
+const Results = ({ status, errorMsg, processing, hasSearched, results, handleSelectUser }) => {
+    const selectUser = (user) => handleSelectUser(user.id, user.name);
+
     return (
         <>
             {/* Error */}
@@ -27,14 +29,26 @@ const Results = ({ status, errorMsg, processing, hasSearched, results }) => {
                                 key={u.id ?? `${u.email}-${u.names}`}
                                 className="rounded-lg bg-white/10 p-4"
                             >
-                                <div className="text-lg font-semibold">{u.names}</div>
-                                <div className="text-sm opacity-90">{u.email}</div>
+                                <div className='flex justify-between'>
+                                    <div>
+                                        <div className="text-lg font-semibold">{u.names}</div>
+                                        <div className="text-sm opacity-90">{u.email}</div>
 
-                                {u.profile?.timezone ? (
-                                    <div className="mt-2 text-sm opacity-90">
-                                        Timezone: {u.profile.timezone}
+                                        {u.profile?.timezone ? (
+                                            <div className="mt-2 text-sm opacity-90">
+                                                Timezone: {u.profile.timezone}
+                                            </div>
+                                        ) : null}
                                     </div>
-                                ) : null}
+                                    <div>
+                                        <button
+                                            onClick={() => selectUser(u)}
+                                            className="inline-flex items-center px-6 py-3 text-base font-medium text-white bg-[#1b1b18] dark:bg-[#3E3E3A] hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+                                        >
+                                            Know More
+                                        </button>
+                                    </div>
+                                </div>
 
                                 {Array.isArray(u.profile?.skills) && u.profile.skills.length > 0 ? (
                                     <div className="mt-3 flex flex-wrap gap-2">

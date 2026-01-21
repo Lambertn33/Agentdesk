@@ -1,11 +1,22 @@
-import React, { useState } from 'react';
+import React, { useState, useCallback } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
-import { Layout, HomeHero, HomeQuery, HomeSearchResults } from '../Components';
-import { useCallback } from 'react';
+import { Layout, HomeHero, HomeQuery, HomeSearchResults, HomeUserChat } from '../Components';
 
 const Index = ({ auth }) => {
   const [hasSearched, setHasSearched] = useState(false);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const { flash } = usePage().props;
+
+  const onOpen = useCallback((u) => {
+    setSelectedUser(u);
+    setIsModalOpen(true);
+  }, []);
+
+  const onClose = useCallback(() => {
+    setIsModalOpen(false);
+    setSelectedUser(null);
+  }, []);
 
   const { data, setData, post, processing, errors, reset } = useForm({
     prompt: '',
@@ -67,9 +78,16 @@ Examples:
             errorMsg={errorMsg}
             results={results}
             processing={processing}
+            handleSelectUser={onOpen}
           />
         </div>
       </div>
+
+      <HomeUserChat
+        user={selectedUser}
+        onClose={onClose}
+        open={isModalOpen}
+      />
     </Layout>
   );
 };
