@@ -22,6 +22,17 @@ General rules:
 - If the user uses **"and"** between skills → `skillsMode = "AND"`.
 - If the user uses **"or"** between skills → `skillsMode = "OR"`.
 - If only one skill → `skillsMode = "SINGLE"`.
+- Different phrases in the prompt should map to the same canonical skill in DB
+Examples:
+
+Examples:
+- “AI Integration”
+- “AI Integrations”
+- “Integrating AI”
+- “AI-powered features”
+- “AI features”
+
+All should resolve to AI Integration (your DB skill name).
 
 ### Timezone extraction
 - Accept formats: `GMT+2`, `GMT +2`, `UTC+2`, `+2`, `-10`.
