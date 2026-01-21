@@ -13,9 +13,13 @@ use App\DataModels\UsersResponse;
 class SearchProfileAgent extends Agent
 {
     protected $model = 'gpt-4.1';
+
     protected $history = 'in_memory';
+
     protected $provider = 'default';
+
     protected int $maxSteps = 2;
+    
     protected $responseSchema = UsersResponse::class;
 
     public function __construct()
