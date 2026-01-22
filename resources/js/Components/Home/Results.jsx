@@ -49,38 +49,6 @@ const Results = ({ status, errorMsg, processing, hasSearched, results, handleSel
                                         </button>
                                     </div>
                                 </div>
-
-                                {Array.isArray(u.profile?.skills) && u.profile.skills.length > 0 ? (
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {u.profile.skills.map((s) => (
-                                            <span
-                                                key={s.id ?? s.name}
-                                                className="rounded-full bg-white/15 px-3 py-1 text-xs"
-                                            >
-                                                {s.name}
-                                                {s.pivot?.level ? ` • ${s.pivot.level}` : ''}
-                                                {typeof s.pivot?.years_of_experience === 'number'
-                                                    ? ` • ${s.pivot.years_of_experience}y`
-                                                    : ''}
-                                            </span>
-                                        ))}
-                                    </div>
-                                ) : (
-                                    <div className="mt-3 text-xs opacity-80">No skills listed.</div>
-                                )}
-
-                                {Array.isArray(u.profile?.interests) && u.profile.interests.length > 0 ? (
-                                    <div className="mt-3 flex flex-wrap gap-2">
-                                        {u.profile.interests.map((i) => (
-                                            <span
-                                                key={i.id ?? i.name}
-                                                className="rounded-full bg-white/15 px-3 py-1 text-xs"
-                                            >
-                                                {i.name}
-                                            </span>
-                                        ))}
-                                    </div>
-                                ) : null}
                             </div>
                         ))}
                     </div>
