@@ -26,5 +26,5 @@ Route::controller(SearchUserController::class)->prefix('search-user')->group(fun
 
 
 Route::get("/users", function() {
-    return \App\Models\User::with('profile.skills')->with('profile.interests')->get();
+    return \App\Models\User::with('profile.skills')->with('profile.interests')->with('profile.availability')->get();
 });

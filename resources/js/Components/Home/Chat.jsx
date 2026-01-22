@@ -34,7 +34,6 @@ const UserChatModal = ({ open, onClose, user }) => {
         bottomRef.current?.scrollIntoView({ behavior: "smooth" });
     }, [messages, open]);
 
-    // Safe early return (hooks already ran)
     if (!open || !user) return null;
 
     const send = async (e) => {
@@ -43,7 +42,6 @@ const UserChatModal = ({ open, onClose, user }) => {
         const text = message.trim();
         if (!text || sending) return;
 
-        // Show user message immediately
         setMessages((prev) => [...prev, { role: "user", text }]);
         setMessage("");
         setSending(true);
@@ -53,38 +51,20 @@ const UserChatModal = ({ open, onClose, user }) => {
                 message,
                 userId: user.id
             });
-            console.log(res);
-            // const res = await fetch("/get-user", {
-            //     method: "POST",
-            //     headers: {
-            //         "Content-Type": "application/json",
-            //         "X-CSRF-TOKEN": document
-            //             .querySelector('meta[name="csrf-token"]')
-            //             .getAttribute("content"),
-            //     },
-            //     body: JSON.stringify({
-            //         userId: user.id,
-            //         message: text,
-            //     }),
-            // });
+            const reply =
+                res?.data?.assistantReply ??
+                "";
+            setMessages((prev) => [
+                ...prev,
+                {
+                    role: "assistant",
+                    text: typeof reply === "string" && reply.trim()
+                        ? reply
+                        : "I didn’t get a reply. Please try again.",
+                },
+            ]);
 
-            // if (!res.ok) {
-            //     throw new Error("Request failed");
-            // }
-
-            // const json = await res.json();
-
-            // setMessages((prev) => [
-            //     ...prev,
-            //     {
-            //         role: "assistant",
-            //         text:
-            //             json?.reply ??
-            //             "I couldn't find an answer based on the available information.",
-            //     },
-            // ]);
         } catch (err) {
-            console.log(err);
             setMessages((prev) => [
                 ...prev,
                 {
