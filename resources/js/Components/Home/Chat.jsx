@@ -77,7 +77,7 @@ const UserChatModal = ({ open, onClose, user }) => {
 
         try {
             const url =
-                mode === CHAT_MODE.MESSAGE ? "/api/message-user" : "/api/get-user";
+                mode === CHAT_MODE.MESSAGE ? "/api/messages" : "/api/get-user";
 
             const payload =
                 mode === CHAT_MODE.MESSAGE
@@ -91,6 +91,7 @@ const UserChatModal = ({ open, onClose, user }) => {
                         userId: user.id,
                         message: text,
                     };
+            alert(payload);
 
             const res = await axios.post(url, payload);
 
