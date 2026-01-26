@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;    
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AI\SearchUserController;
+use App\Http\Controllers\AI\MessagesController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -22,6 +23,10 @@ Route::controller(AuthController::class)->group(function () {
 
 Route::controller(SearchUserController::class)->prefix('search-user')->group(function() {
     Route::post('/', 'searchUser');
+});
+
+Route::middleware('auth')->prefix('my-messages')->group(function() {
+    Route::post('/', MessagesController::class);
 });
 
 
