@@ -16,6 +16,10 @@ class MessagesController extends Controller
         $validated = $request->validate([
             'prompt' => ['required', 'string', 'min:1', 'max:500'],
         ]);
+
+        \Log::info('Auth', [
+            'error' => Auth::user()
+        ]);
         
         try {
             $agent = app(\App\AiAgents\GetMessagesAgent::class);
@@ -27,7 +31,7 @@ class MessagesController extends Controller
             return response()->json([
                 'assistantReply' => is_string($reply) ? $reply : (string)($reply ?? ''),
             ], 200);
-        } catch (\Throwable $th) {
+        } catch (\Throwable $e) {
             \Log::error('Message user chat failed', [
                 'error' => $e->getMessage(),
                 'prompt' => $validated['prompt'],

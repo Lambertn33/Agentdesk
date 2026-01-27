@@ -34,6 +34,11 @@ Route::get("/users", function() {
     return \App\Models\User::with('profile.skills')->with('profile.interests')->with('profile.availability')->get();
 });
 
+
+Route::prefix('messages')->group(function() {
+    Route::post('/', MessagesController::class);
+});
+
 Route::get('/test-messages', function() {
     $allMessages = \App\Models\Message::with('receiver')->get();
     return $allMessages;

@@ -89,7 +89,6 @@ class AuthController extends Controller
             return redirect()->route('home');
 
         } catch (\Throwable $th) {
-            throw $th;
             DB::rollBack();
             return back()->withErrors([
                 'email' => 'An error occurred while registering. Please try again.',

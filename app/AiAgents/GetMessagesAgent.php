@@ -5,8 +5,9 @@ namespace App\AiAgents;
 use LarAgent\Agent;
 
 use LarAgent\Attributes\Tool;
-
+use App\Services\MessageUserServices;
 use Illuminate\Support\Facades\Auth;
+
 
 class GetMessagesAgent extends Agent
 {
@@ -30,7 +31,7 @@ class GetMessagesAgent extends Agent
     protected function initializeAuth()
     {
         $this->authenticatedUser = Auth::user();
-        $this->isAuthenticated = Auth::user() ? true : false;
+        $this->isAuthenticated = Auth::check();
 
     }
 
@@ -41,7 +42,9 @@ class GetMessagesAgent extends Agent
 
     public function instructions()
     {
-        return view('prompts.get-user-messages');
+        return view('prompts.get-user-messages', [
+            'isAuthenticated' => $this->isAuthenticated
+        ]);
     }
 
     public function prompt($message)
@@ -54,10 +57,10 @@ class GetMessagesAgent extends Agent
     )]
     public function getUnreadMessages(): array
     {
-
-        return [
-            'user' => $this->authenticatedUser
-        ];
+        $service = app(MessageUserServices::class);
+        $messages = $service->getMessages($this->authenticatedUser->id);
+        \Log::info('user messages', $messages);
+        return $messages;
     }
     
 }
