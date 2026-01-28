@@ -14,16 +14,6 @@ class UsersSeeder extends Seeder
     public function run(): void
     {
         User::query()->delete();
-        // Create admin user
-        User::create([
-            'names' => 'Admin User',
-            'email' => 'admin@agentdesk.com',
-            'password' => Hash::make('admin12345'),
-            'role' => User::ADMIN,
-            'status' => User::ACTIVE,
-            'email_verified_at' => now(),
-        ]);
-
         // Create 14 manager users
         for ($i = 1; $i <= 14; $i++) {
             User::create([

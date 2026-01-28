@@ -43,3 +43,8 @@ Route::get('/test-messages', function() {
     $allMessages = \App\Models\Message::with('receiver')->get();
     return $allMessages;
 });
+
+Route::get('/test-messages/{userId}', function(string $userId) {
+    $allMessages = \App\Models\Message::with('receiver')->where('receiver_id', $userId)->get();
+    return $allMessages;
+});
