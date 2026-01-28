@@ -17,7 +17,6 @@ AgentDesk is a talent discovery platform that makes it easy to find skilled prof
 ### For Employers / Recruiters
 - **Natural Language Search**: Search for professionals using plain English queries
   - Example: "Find developers skilled in React and TypeScript"
-  - Example: "Show me managers with 5+ years of experience"
 - **Advanced Filtering**: Search by skills, experience, location, availability, or any combination
 - **Contact & Connect**: View profiles and contact information to reach out to professionals
 

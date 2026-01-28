@@ -53,14 +53,46 @@ class GetMessagesAgent extends Agent
     }
 
     #[Tool(
-        description: 'Get the user messages',
+        description: 'Get all the user messages',
     )]
     public function getUnreadMessages(): array
     {
         $service = app(MessageUserServices::class);
-        $messages = $service->getMessages($this->authenticatedUser->id);
-        \Log::info('user messages', $messages);
+        $messages = $service->getAllUnreadMessages($this->authenticatedUser->id);
+        \Log::info('user all messages', $messages);
         return $messages;
     }
     
+    #[Tool(
+        description: 'Get all the user messages from only yesterday',
+    )]
+    public function getYesterdayUnreadMessages(): array
+    {
+        $service = app(MessageUserServices::class);
+        $messages = $service->getYesterdayUnreadMessages($this->authenticatedUser->id);
+        \Log::info('user yesterday messages', $messages);
+        return $messages;
+    }
+
+    #[Tool(
+        description: 'Get all the user messages from only this current week',
+    )]
+    public function getThisWeekUnreadMessages(): array
+    {
+        $service = app(MessageUserServices::class);
+        $messages = $service->getThisWeekUnreadMessages($this->authenticatedUser->id);
+        \Log::info('user yesterday messages', $messages);
+        return $messages;
+    }
+
+    #[Tool(
+        description: 'Get all the user messages from only this current week',
+    )]
+    public function getLastWeekUnreadMessages(): array
+    {
+        $service = app(MessageUserServices::class);
+        $messages = $service->getLastWeekUnreadMessages($this->authenticatedUser->id);
+        \Log::info('user yesterday messages', $messages);
+        return $messages;
+    }
 }
