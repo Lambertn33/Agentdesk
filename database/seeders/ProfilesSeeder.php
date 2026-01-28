@@ -8,9 +8,11 @@ use App\Models\User;
 use App\Models\Profile;
 use App\Models\Skill;
 use App\Models\Interest;
+use App\Models\Message;
 use App\Models\ProfileAvailability;
 use App\Models\ProfileSkill;
 use Faker\Factory as Faker;
+use Carbon\Carbon;
 
 class ProfilesSeeder extends Seeder
 {
@@ -81,9 +83,48 @@ class ProfilesSeeder extends Seeder
                 'time_block' => $faker->randomElement(ProfileAvailability::TIME_BLOCK),
                 'mode' => $faker->randomElement(ProfileAvailability::MODE),
             ]);
+
+            //SEEDING SOME TEST MESSAGES
+            $todayAt = Carbon::now()
+                ->setTime(rand(8, 20), rand(0, 59), rand(0, 59))
+                ->utc();
+            $lastWeekStart = Carbon::now()->subWeek()->startOfWeek(Carbon::MONDAY)->startOfDay();
+            $lastWeekEnd   = Carbon::now()->subWeek()->endOfWeek(Carbon::SUNDAY)->endOfDay();
+                
+            $lastWeekAt = Carbon::createFromTimestamp(
+                rand($lastWeekStart->getTimestamp(), $lastWeekEnd->getTimestamp()))->utc();
+
+
+            $todayTextOptions = [
+                "Hey, can you help me with React.js this weekend?",
+                "Hello, I’m John. Can we talk? My email is john@example.com and my phone is +250788123456.",
+                "Hi, I need help with Laravel. You can reach me at laravel.help@example.com.",
+            ];
+                
+            $lastWeekTextOptions = [
+                "Hey bro, I’m Sarah. My contact is +250789000111. I need help with Vue.js.",
+                "Hello, can you share your availability for next week?",
+                "Hi, my email is client@example.com — I need support with a small project.",
+            ];
+
+            Message::create([
+                'receiver_id' => $user->id,
+                'message'     => $faker->randomElement($todayTextOptions),
+                'is_read'     => false,
+                'created_at'  => $todayAt,
+                'updated_at'  => $todayAt,
+            ]);
+            
+            Message::create([
+                'receiver_id' => $user->id,
+                'message'     => $faker->randomElement($lastWeekTextOptions),
+                'is_read'     => false,
+                'created_at'  => $lastWeekAt,
+                'updated_at'  => $lastWeekAt,
+            ]);
         }
 
-        $this->command->info("Created {$users->count()} profiles with random skills, interests, and availability.");
+        $this->command->info("Created {$users->count()} profiles with random skills, interests, messages and availability.");
     }
 
     /**

@@ -95,4 +95,15 @@ class GetMessagesAgent extends Agent
         \Log::info('user yesterday messages', $messages);
         return $messages;
     }
+
+    #[Tool(
+        description: 'Get all the user messages from only today',
+    )]
+    public function getTodayUnreadMessages(): array
+    {
+        $service = app(MessageUserServices::class);
+        $messages = $service->getTodayUnreadMessages($this->authenticatedUser->id);
+        \Log::info('user today messages', $messages);
+        return $messages;
+    }
 }

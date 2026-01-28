@@ -83,112 +83,16 @@ class MessageUserServices
         return $this->unreadInRange($userId, $startUtc, $endUtc, $limit);
     }
 
+    public function getTodayUnreadMessages(int $userId, int $limit = 10): array
+    {
+        $startUtc = Carbon::now()
+        ->startOfDay()
+        ->utc();
 
+        $endUtc = Carbon::now()
+            ->utc();
 
+        return $this->unreadInRange($userId, $startUtc, $endUtc, $limit);
+    }
 
-
-
-    // public function getAllUnreadMessages($userId, $limit = 5)
-    // {
-    //     $messages = Message::where('receiver_id', $userId)
-    //         ->where('is_read', false)
-    //         ->latest()
-    //         ->limit($limit)
-    //         ->get();
-
-    //     return [
-    //         'ok' => true,
-    //         'messages' => $messages->map(function($message){
-    //             return [
-    //                 'message' => $message->message
-    //             ];
-    //         })->values()->all()
-    //     ];
-    // }
-
-    // public function getYesterdayUnreadMessages($userId, $limit = 10)
-    // {
-    //     $start = Carbon::now()->subDay()->startOfDay()->utc();
-    //     $end   = Carbon::now()->subDay()->endOfDay()->utc();
-
-    //     \Log::info('yesterday', ['data' => $start]);
-
-    //     $messages = Message::query()
-    //         ->where('receiver_id', $userId)
-    //         ->where('is_read', false)
-    //         ->whereBetween('created_at', [$start, $end])
-    //         ->orderByDesc('created_at')
-    //         ->limit($limit)
-    //         ->get(['id', 'message', 'created_at']);
-
-    //     return [
-    //         'ok' => true,
-    //         'messages' => $messages->map(function($message){
-    //             return [
-    //                 'message' => $message->message
-    //             ];
-    //         })->values()->all()
-    //     ];
-    // }
-
-    // public function getThisWeekUnreadMessages($userId, $limit = 10)
-    // {
-    //     $start = Carbon::now()->startOfWeek(Carbon::MONDAY)->startOfDay()->utc();
-    //     $end   = Carbon::now()->utc();
-
-    //     \Log::info('this week start', ['data' => $start]);
-    //     \Log::info('this week end', ['data' => $end]);
-
-    //     $messages = Message::query()
-    //         ->where('receiver_id', $userId)
-    //         ->where('is_read', false)
-    //         ->whereBetween('created_at', [$start, $end])
-    //         ->orderByDesc('created_at')
-    //         ->limit($limit)
-    //         ->get(['id', 'message', 'created_at']);
-
-    //     return [
-    //         'ok' => true,
-    //         'messages' => $messages->map(function($message){
-    //             return [
-    //                 'message' => $message->message
-    //             ];
-    //         })->values()->all()
-    //     ];
-    // }
-
-    // public function getLastWeekUnreadMessages($userId, $limit = 10)
-    // {
-    //     $start = Carbon::now()
-    //         ->subWeek()
-    //         ->startOfWeek(Carbon::MONDAY)
-    //         ->startOfDay()
-    //         ->utc();
-
-    //     $end = Carbon::now()
-    //         ->subWeek()
-    //         ->endOfWeek(Carbon::SUNDAY)
-    //         ->endOfDay()
-    //         ->utc();
-
-    //     \Log::info('last week start', ['data' => $start]);
-    //     \Log::info('last week end', ['data' => $end]);
-
-    //     $messages = Message::query()
-    //         ->where('receiver_id', $userId)
-    //         ->where('is_read', false)
-    //         ->whereBetween('created_at', [$start, $end])
-    //         ->orderByDesc('created_at')
-    //         ->limit($limit)
-    //         ->get(['id', 'message', 'created_at']);
-
-    //     return [
-    //         'ok' => true,
-    //         'messages' => $messages->map(function($message){
-    //             return [
-    //                 'message' => $message->message
-    //             ];
-    //         })->values()->all()
-    //     ];
-    // }
 }
