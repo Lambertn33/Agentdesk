@@ -17,3 +17,6 @@ export { default as RegisterSkillsExperience } from './Register/RegisterSkillsEx
 export { default as RegisterInterests } from './Register/RegisterInterests';
 export { default as RegisterForm } from './Register/RegisterForm';
 export { default as RegisterAddressForm } from './Register/RegisterAddress';
+
+export { default as MessagesPrompt } from "./Home/Auth/MessagesPrompt";
+export { default as MessagesTable } from "./Home/Auth/MessagesTable";

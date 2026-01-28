@@ -11,7 +11,7 @@ class MessagesController extends Controller
     /**
      * Handle the incoming request.
      */
-    public function __invoke(Request $request)
+    public function store(Request $request)
     {
         $validated = $request->validate([
             'prompt' => ['required', 'string', 'min:1', 'max:500'],

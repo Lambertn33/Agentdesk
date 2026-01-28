@@ -25,18 +25,13 @@ Route::controller(SearchUserController::class)->prefix('search-user')->group(fun
     Route::post('/', 'searchUser');
 });
 
-Route::middleware('auth')->prefix('my-messages')->group(function() {
-    Route::post('/', MessagesController::class);
-});
-
-
 Route::get("/users", function() {
     return \App\Models\User::with('profile.skills')->with('profile.interests')->with('profile.availability')->get();
 });
 
 
 Route::prefix('messages')->group(function() {
-    Route::post('/', MessagesController::class);
+    Route::post('/', [MessagesController::class, 'store']);
 });
 
 Route::get('/test-messages', function() {
