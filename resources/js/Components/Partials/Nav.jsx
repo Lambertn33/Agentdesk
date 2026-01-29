@@ -20,6 +20,12 @@ const Nav = ({ user }) => {
                                     {user.names}
                                 </span>
                                 <Link
+                                    href="/profile"
+                                    className="inline-flex items-center px-4 py-2 text-sm font-medium text-white  hover:bg-[#f53003] dark:hover:bg-[#FF4433] rounded-sm transition-colors"
+                                >
+                                    My Profile
+                                </Link>
+                                <Link
                                     href="/logout"
                                     method="post"
                                     as="button"

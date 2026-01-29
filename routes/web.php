@@ -5,6 +5,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\AI\SearchUserController;
 use App\Http\Controllers\AI\MessagesController;
+use App\Http\Controllers\ProfileController;
 
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
@@ -25,21 +26,8 @@ Route::controller(SearchUserController::class)->prefix('search-user')->group(fun
     Route::post('/', 'searchUser');
 });
 
-Route::get("/users", function() {
-    return \App\Models\User::with('profile.skills')->with('profile.interests')->with('profile.availability')->get();
-});
-
+Route::get('/profile', ProfileController::class)->middleware('auth');
 
 Route::prefix('messages')->group(function() {
     Route::post('/', [MessagesController::class, 'store']);
-});
-
-Route::get('/test-messages', function() {
-    $allMessages = \App\Models\Message::with('receiver')->get();
-    return $allMessages;
-});
-
-Route::get('/test-messages/{userId}', function(string $userId) {
-    $allMessages = \App\Models\Message::with('receiver')->where('receiver_id', $userId)->get();
-    return $allMessages;
 });

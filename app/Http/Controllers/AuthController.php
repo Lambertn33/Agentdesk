@@ -41,7 +41,8 @@ class AuthController extends Controller
         ]);
 
         if (Auth::attempt($request->only('email', 'password'))) {
-            return redirect()->route('home');
+            $request->session()->regenerate();
+            return Inertia::location(route('home'));
         }
 
         return back()->withErrors([
