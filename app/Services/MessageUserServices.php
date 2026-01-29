@@ -95,4 +95,31 @@ class MessageUserServices
         return $this->unreadInRange($userId, $startUtc, $endUtc, $limit);
     }
 
+    public function markMyMessagesAsRead(int $userId)
+    {
+        try {
+            $count = Message::query()
+                ->where('receiver_id', $userId)
+                ->where('is_read', false)
+                ->update([
+                    'is_read' => true,
+                    'updated_at' => now(),
+                ]);
+    
+            return [
+                'ok' => true,
+                'marked_count' => (int) $count,
+            ];
+        } catch (\Throwable $e) {
+            \Log::error('markAllUnreadAsRead failed', [
+                'userId' => $userId,
+                'error' => $e->getMessage(),
+            ]);
+    
+            return [
+                'ok' => false,
+                'marked_count' => 0,
+            ];
+        }
+    }
 }

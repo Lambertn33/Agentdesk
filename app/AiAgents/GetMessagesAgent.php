@@ -106,4 +106,14 @@ class GetMessagesAgent extends Agent
         \Log::info('user today messages', $messages);
         return $messages;
     }
+
+    #[Tool(
+        description: 'mark all the user messages as read',
+    )]
+    public function markMyMessagesAsRead(): array
+    {
+        $service = app(MessageUserServices::class);
+        $response = $service->markMyMessagesAsRead($this->authenticatedUser->id);
+        return $response;
+    }
 }
