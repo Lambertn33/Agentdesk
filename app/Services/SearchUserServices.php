@@ -20,11 +20,26 @@ class SearchUserServices
             'payload' => $payload,
         ]);
         $criteria = self::decodeCriteria($payload);
-        Log::info($criteria, ['criteria' =>  $criteria]);
 
         if ($criteria === null) {
-            return ['users' => []];
+            request()->attributes->set('searchMeta', []);
+            return ['ok' => true, 'users' => []];
         }
+
+        request()->attributes->set('searchMeta', [
+            'skills' => [
+                'values' => $criteria['skills'] ?? [],
+                'mode'   => $criteria['skillsMode'] ?? 'OR',
+            ],
+            'timezone' => [
+                'values' => $criteria['timezone'] ?? [],
+                'mode'   => $criteria['timezoneMode'] ?? 'OR',
+            ],
+            'interests' => [
+                'values' => $criteria['interests'] ?? [],
+                'mode'   => $criteria['interestsMode'] ?? 'OR',
+            ],
+        ]);
 
         $query = User::query()->select(['users.id', 'users.names', 'users.email']);
         $query->with([
@@ -39,8 +54,6 @@ class SearchUserServices
             },
         ]);
         
-
-        Log::info('users', ['tag' => 'js']);
         self::applySkillsFilter(
             $query,
             $criteria['skills'] ?? [],
@@ -60,6 +73,22 @@ class SearchUserServices
         $users = $query->limit(25)->get();
 
         return [
+            'ok' => true,
+            'meta' => [
+                'skills' => [
+                    'values' => $criteria['skills'] ?? [],
+                    'mode'   => $criteria['skillsMode'] ?? 'OR',
+                ],
+                'timezone' => [
+                    'values' => $criteria['timezone'] ?? [],
+                    'mode'   => $criteria['timezoneMode'] ?? 'OR',
+                    'between' => $criteria['timezoneBetween'] ?? null,
+                ],
+                'interests' => [
+                    'values' => $criteria['interests'] ?? [],
+                    'mode'   => $criteria['interestsMode'] ?? 'OR',
+                ],
+            ],
             'users' => $users->map(function ($u) {
                 return [
                     'id' => $u->id,

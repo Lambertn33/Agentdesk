@@ -23,9 +23,14 @@ class SearchUserController extends Controller
 
             $response = $agent->message($prompt)->respond();
 
+            $searchMeta = request()->attributes->get('searchMeta', []);
+
+            \Log::info('searchMeta', ['searchMeta' => $searchMeta]);
+
             if (!$response) {
-                return redirect()->back()->with([
+                return back()->with([
                     'results' => [],
+                    'searchMeta' => $searchMeta,
                     'status'  => 200,
                     'error'   => null,
                 ]);
@@ -41,8 +46,9 @@ class SearchUserController extends Controller
                 $users = [];
             }
 
-            return redirect()->back()->with([
+            return back()->with([
                 'results' => $users,
+                'searchMeta' => $searchMeta,
                 'status'  => 200,
                 'error'   => null,
             ]);
@@ -52,10 +58,11 @@ class SearchUserController extends Controller
                 'prompt' => $prompt,
             ]);
 
-            return redirect()->back()->with([
+            return back()->with([
                 'results' => [],
                 'status'  => 200,
                 'error'   => null,
+                'searchMeta' => $searchMeta,
             ]);
         }
     }

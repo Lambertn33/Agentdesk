@@ -1,6 +1,6 @@
 import React from 'react'
 
-const Results = ({ status, errorMsg, processing, hasSearched, results, handleSelectUser }) => {
+const Results = ({ errorMsg, processing, hasSearched, results, handleSelectUser }) => {
     const selectUser = (user) => handleSelectUser(user);
 
     return (

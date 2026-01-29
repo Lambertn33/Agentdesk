@@ -39,6 +39,7 @@ class HandleInertiaRequests extends Middleware
             ...parent::share($request),
             'flash' => [
                 'results' => fn () => $request->session()->get('results'),
+                'searchMeta' => fn () => $request->session()->get('searchMeta'),
                 'status'  => fn () => $request->session()->get('status'),
                 'error'   => fn () => $request->session()->get('error'),
             ],

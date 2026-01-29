@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
-import { Layout, HomeHero, HomeQuery, HomeSearchResults, HomeUserChat } from '../Components';
+import { Layout, HomeHero, HomeQuery, HomeSearchResults, HomeUserChat, HomeSearchMeta } from '../Components';
 
 const Index = ({ auth }) => {
   const [hasSearched, setHasSearched] = useState(false);
@@ -39,8 +39,11 @@ const Index = ({ auth }) => {
   }
 
   const results = flash?.results || [];
+  const searchMeta = flash?.searchMeta || null;
   const status = flash?.status;
   const errorMsg = flash?.error;
+
+  console.log(searchMeta, 'bbbbrrrr');
 
   return (
     <Layout auth={auth}>
@@ -72,6 +75,7 @@ Examples:
         </div>
 
         <div className='w-3/5 max-h-full overflow-y-auto'>
+          <HomeSearchMeta searchMeta={searchMeta} />
           <HomeSearchResults
             hasSearched={hasSearched}
             status={status}

@@ -31,3 +31,7 @@ Route::get('/profile', ProfileController::class)->middleware('auth');
 Route::prefix('messages')->group(function() {
     Route::post('/', [MessagesController::class, 'store']);
 });
+
+Route::get('/test-users', function() {
+    return \App\Models\User::with('profile.availability')->with('profile.skills')->with('profile.interests')->get();
+});
