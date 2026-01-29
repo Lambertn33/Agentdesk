@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from 'react';
+import React, { useState, useCallback, useEffect } from 'react';
 import { useForm, usePage } from '@inertiajs/react';
 import { Layout, HomeHero, HomeQuery, HomeSearchResults, HomeUserChat, HomeSearchMeta } from '../Components';
 
@@ -6,12 +6,19 @@ const Index = ({ auth }) => {
   const [hasSearched, setHasSearched] = useState(false);
   const [selectedUser, setSelectedUser] = useState(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [uiResults, setUiResults] = useState([]);
+  const [uiSearchMeta, setUiSearchMeta] = useState(null);
   const { flash } = usePage().props;
 
   const onOpen = useCallback((u) => {
     setSelectedUser(u);
     setIsModalOpen(true);
   }, []);
+
+  useEffect(() => {
+    setUiResults(Array.isArray(flash?.results) ? flash.results : []);
+    setUiSearchMeta(flash?.searchMeta ?? null);
+  }, [flash?.results, flash?.searchMeta]);
 
   const onClose = useCallback(() => {
     setIsModalOpen(false);
@@ -28,7 +35,8 @@ const Index = ({ auth }) => {
 
   function submit(e) {
     e.preventDefault();
-
+    setUiResults([]);
+    setUiSearchMeta([]);
     post('/search-user', {
       preserveScroll: true,
       onSuccess: () => {
@@ -38,12 +46,8 @@ const Index = ({ auth }) => {
     });
   }
 
-  const results = flash?.results || [];
-  const searchMeta = flash?.searchMeta || null;
   const status = flash?.status;
   const errorMsg = flash?.error;
-
-  console.log(searchMeta, 'bbbbrrrr');
 
   return (
     <Layout auth={auth}>
@@ -75,12 +79,12 @@ Examples:
         </div>
 
         <div className='w-3/5 max-h-full overflow-y-auto'>
-          <HomeSearchMeta searchMeta={searchMeta} />
+        <HomeSearchMeta searchMeta={uiSearchMeta} />
           <HomeSearchResults
             hasSearched={hasSearched}
             status={status}
             errorMsg={errorMsg}
-            results={results}
+            results={uiResults}
             processing={processing}
             handleSelectUser={onOpen}
           />
