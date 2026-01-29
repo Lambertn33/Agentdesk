@@ -23,6 +23,7 @@ class HomeController extends Controller
                 'auth' => [
                     'user' => auth()->user(),
                 ],
+                'receivedMessages' => auth()->user()->receivedMessages
             ]);
         }
     }

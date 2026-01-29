@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Layout, MessagesPrompt, MessagesTable } from "../Components";
 import useMessagesChat from "../Hooks/useMessagesChat";
 
-const Messages = ({ auth }) => {
+const Messages = ({ auth, receivedMessages }) => {
     const [view, setView] = useState('table');
     const { input, setInput, messages, sending, send, bottomRef } =
         useMessagesChat(auth);
@@ -10,7 +10,7 @@ const Messages = ({ auth }) => {
 
     const renderView = () => {
         return view === "table" ?
-            <MessagesTable /> :
+            <MessagesTable receivedMessages={receivedMessages}/> :
             <MessagesPrompt
                 auth={auth}
                 bottomRef={bottomRef}
