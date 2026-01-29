@@ -1,198 +1,187 @@
 # AgentDesk
 
-A modern platform for finding and connecting with skilled professionals. Search our database of agents and professionals using natural language queries powered by PrismPHP.
+AgentDesk is a modern platform for discovering skilled professionals and interacting with them through **safe, tool-based AI assistants**.
 
-## 🎯 About
+It combines structured profiles, public messaging, and strictly controlled AI agents to enable talent discovery and inbox management without hallucinations or hidden logic.
 
-AgentDesk is a talent discovery platform that makes it easy to find skilled professionals based on their expertise, experience, and qualifications. Users can search using natural language queries, and the system intelligently matches them with the right professionals.
+---
 
-## ✨ Features
+## 🎯 What is AgentDesk?
 
-### For Job Seekers / Professionals
-- **Profile Creation**: Register with your skills, interests, and availability
-- **Skill Management**: Select from categorized skills (Backend, Frontend, Mobile, DevOps, Data & AI, etc.)
-- **Interest Tracking**: Specify your professional interests
-- **Profile Visibility**: Make yourself discoverable to potential employers/clients
+AgentDesk allows professionals to create structured profiles (skills, interests, availability) and makes them discoverable.
 
-### For Employers / Recruiters
-- **Natural Language Search**: Search for professionals using plain English queries
-  - Example: "Find developers skilled in React and TypeScript"
-- **Advanced Filtering**: Search by skills, experience, location, availability, or any combination
-- **Contact & Connect**: View profiles and contact information to reach out to professionals
+Visitors can:
 
-### Technical Features
-- **Multi-step Registration**: Streamlined onboarding process
-- **Real-time Validation**: Client-side form validation
-- **Responsive Design**: Works seamlessly on desktop and mobile devices
-- **Dark Mode Support**: Beautiful UI with light/dark theme support
-- **Type-safe Forms**: Built with Inertia.js and React
+- Search for professionals using natural language
+- View public profiles
+- Send messages to professionals (even without an account)
+
+Authenticated users can:
+
+- View their unread inbox messages
+- Ask natural language questions about their inbox
+- Manage messages using AI assistants that operate through explicit backend tools
+
+AgentDesk intentionally avoids free-form chatbots.  
+Every AI action is constrained, auditable, and backed by server-side logic.
+
+---
+
+## ✨ Core Features
+
+### 👤 Profiles
+
+- Create a professional profile with:
+    - Skills (level + years of experience)
+    - Interests
+    - Availability (day, time block, mode)
+- Profiles are publicly viewable and searchable
+
+---
+
+### 🔍 Talent Discovery
+
+- Natural language search powered by LarAgent
+- Example queries:
+    - "Find developers skilled in React and TypeScript"
+    - "Show me backend engineers available on weekends"
+    - "Who has experience with Laravel and Docker?"
+
+---
+
+### ✉️ Public Messaging
+
+- Anyone (including unauthenticated visitors) can send a message to a professional
+- No sender identity is required
+- Messages are stored securely and delivered to the recipient’s inbox
+
+This lowers friction for first contact and outreach.
+
+---
+
+## 🤖 AI Assistants
+
+AgentDesk includes **purpose-built AI assistants**, not generic chatbots.
+
+### 📥 Inbox Assistant (Authenticated Users Only)
+
+The Inbox Assistant helps users manage **unread messages** using natural language.
+
+Supported questions include:
+
+- "Did someone text me today?"
+- "Any unread messages yesterday?"
+- "Do I have new messages this week?"
+- "Did I receive messages last week?"
+- "How many unread messages do I have?"
+
+---
+
+### 🕒 Time-Based Queries
+
+The Inbox Assistant currently supports:
+
+- Today
+- Yesterday
+- This week
+- Last week
+
+If the user asks about an unsupported time range (e.g. last month, last year), the assistant responds clearly:
+
+"I don’t support that time range yet."
+
+No guessing. No fallback logic.
+
+---
+
+### ✅ Mark All as Read
+
+Authenticated users can ask the assistant to mark all unread messages as read:
+
+- "Mark all my unread messages as read"
+- "Clear my inbox"
+
+The assistant executes this through a single backend tool and confirms the result.
+
+---
+
+### 🛡️ Safety & Accuracy Guarantees
+
+- AI assistants never invent data
+- Sender identity is never guessed
+- Unsupported requests are explicitly rejected
+- Each request can trigger at most one backend tool
+- Authentication and authorization are enforced server-side
+
+---
+
+## 🧠 AI Architecture (Important)
+
+AgentDesk uses a **tool-driven AI architecture powered by LarAgent**.
+
+- AI assistants cannot access the database directly
+- They can only call explicitly defined tools
+- Each request allows at most one tool call
+- The backend controls authentication, authorization, and data access
+
+This design prevents hallucinations and ensures predictable behavior.
+
+---
 
 ## 🛠️ Tech Stack
 
 ### Backend
-- **Laravel 12** - PHP framework
-- **MySQL 8.0** - Database
-- **Inertia.js** - Modern monolith approach
-- **PrismPHP** - Natural language to database query translation
+
+- Laravel 12
+- MySQL 8.0
+- Inertia.js
+- LarAgent (tool-based AI execution)
 
 ### Frontend
-- **React** - UI library
-- **Inertia.js React** - Server-driven React components
-- **Tailwind CSS 4** - Utility-first CSS framework
-- **Vite** - Build tool and dev server
 
-### Development Tools
-- **Docker** - Containerization
-- **PropTypes** - Runtime type checking
-- **Pest** - PHP testing framework
+- React
+- Inertia.js (React adapter)
+- Tailwind CSS 4
+- Vite
+
+### Development & Tooling
+
+- Docker & Docker Compose
+- Pest (PHP testing)
+- Faker (database seeding)
+
+---
 
 ## 📋 Prerequisites
 
-- Docker and Docker Compose
-- Node.js 18+ (for local development)
-- PHP 8.2+ (for local development)
-- Composer (for local development)
+- Docker & Docker Compose (recommended)
+
+Or for local development:
+
+- PHP 8.2+
+- Node.js 18+
+- Composer
+
+---
 
 ## 🚀 Installation
 
-### Using Docker (Recommended)
-
-1. **Clone the repository**
-   ```bash
-   git clone <repository-url>
-   cd AgentDesk
-   ```
-
-2. **Start the containers**
-   ```bash
-   docker-compose up --build
-   ```
-
-   This will:
-   - Build the Docker images
-   - Install PHP and Node.js dependencies
-   - Run database migrations
-   - Start the Laravel server on port 8000
-   - Start the Vite dev server on port 5173
-
-3. **Seed the database** (in a new terminal)
-   ```bash
-   docker-compose exec app php artisan db:seed
-   ```
-
-4. **Access the application**
-   - Application: http://localhost:8000
-   - Vite Dev Server: http://localhost:5173
-
-### Local Development
-
-1. **Install dependencies**
-   ```bash
-   composer install
-   npm install
-   ```
-
-2. **Environment setup**
-   ```bash
-   cp .env.example .env
-   php artisan key:generate
-   ```
-
-3. **Database setup**
-   ```bash
-   php artisan migrate
-   php artisan db:seed
-   ```
-
-4. **Start development servers**
-   ```bash
-   # Terminal 1: Laravel server
-   php artisan serve
-
-   # Terminal 2: Vite dev server
-   npm run dev
-   ```
-### Search Functionality
-
-1. Navigate to the home page
-2. Enter a natural language query in the search box
-3. Examples:
-   - "Find developers skilled in React and TypeScript"
-   - "Show me managers with 5+ years of experience"
-   - "I need agents available in the US timezone"
-4. View search results and contact information
-
-## 🧪 Testing
+### Docker (Recommended)
 
 ```bash
-# Run PHP tests
-php artisan test
-
-# Or with Pest
-./vendor/bin/pest
-```
-
-## 📝 Development
-
-### Available Commands
-
-```bash
-# Install dependencies
-composer install
-npm install
-
-# Run migrations
-php artisan migrate
-
-# Seed database
-php artisan db:seed
-
-# Start dev servers
-npm run dev          # Vite dev server
-php artisan serve    # Laravel server
-
-# Build for production
-npm run build
-```
-
-### Docker Commands
-
-```bash
-# Start containers
-docker-compose up
-
-# Stop containers
-docker-compose down
-
-# Rebuild containers
+git clone <repository-url>
+cd AgentDesk
 docker-compose up --build
-
-# Run commands in container
-docker-compose exec app php artisan <command>
-docker-compose exec app npm <command>
 ```
 
-## 🎨 Styling
+## Seed the database
 
-The project uses Tailwind CSS 4 with a custom color scheme:
-- Primary: `#1b1b18` / `#f53003`
-- Dark mode: `#0a0a0a` / `#FF4433`
-- Text: `#706f6c` / `#A1A09A`
+docker-compose exec app php artisan db:seed
 
-## 🤝 Contributing
+## Current Limitations (By Design)
 
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
-3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
-4. Push to the branch (`git push origin feature/AmazingFeature`)
-5. Open a Pull Request
-
-## 📄 License
-
-This project is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
-
-## 🙏 Acknowledgments
-
-- Built with [Laravel](https://laravel.com)
-- UI powered by [React](https://react.dev) and [Inertia.js](https://inertiajs.com)
-- Styled with [Tailwind CSS](https://tailwindcss.com)
+- Message sender identity is not stored yet
+- Inbox assistant only works with unread messages
+- Time ranges are intentionally limited
+- No automatic message replies yet
+- These are deliberate choices to keep the system safe and predictable.
